@@ -9,7 +9,16 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+    "UIAppFonts": ["./assets/fonts/inter_black.ttf", 
+                  "./assets/fonts/inter_bold.ttf", 
+                  "./assets/fonts/inter_extrabold.ttf", 
+                  "./assets/fonts/inter_extralight.ttf", 
+                  "./assets/fonts/inter_light.ttf", 
+                  "./assets/fonts/inter_medium.ttf",
+                  "./assets/fonts/inter_regular.ttf",
+                  "./assets/fonts/inter_semibold.ttf",
+                  "./assets/fonts/inter_thin.ttf" ]
     },
     "assetBundlePatterns": [
       "**/*"
@@ -25,6 +34,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "588c1ccf-2692-4046-9a04-8afb3c848d19"
+      }
+    },
+    "owner": "annruas"
   }
 }
