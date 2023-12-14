@@ -10,7 +10,7 @@ import very_unhealthy from '../charts/very_unhealthy.png';
 
 import Group_167 from '../charts/Group_167.png';
 import search from '../icons/search.png';
-import profile from '../icons/profile.png'; 
+import profile from '../icons/profile.png';
 import more from '../icons/more.png';
 
 const DateDisplay = () => {
@@ -26,42 +26,55 @@ const HomeAq = () => {
   const [aqiData, setAqiData] = useState({
     pm25: undefined,
     ozone: undefined,
+    um100: undefined,
     aqi: undefined,
   });
   const [loading, setLoading] = useState(true);
 
-  const aqiImages = {
-    '0-49': good,
-    '50-99': moderate,
-    '100-149': unhealthy,
-    '150-199': sg_unhealthy,
-    '200-299': very_unhealthy,
-    '300+': hazardous,
-  };
+  const aqiImages = [
+    good,
+    moderate,
+    unhealthy,
+    sg_unhealthy,
+    very_unhealthy,
+    hazardous,
+  ]
 
   useEffect(() => {
     const fetchAqiData = async () => {
       try {
-        const url = `https://api.openaq.org/v2/latest?limit=1&city=Campinas&country_id=BR`;
-        const response = await fetch(url);
-        const data = await response.json();
-    
-        console.log('Received data from OpenAQ API:', data);
-    
-        if (data.results && data.results.length > 0) {
-          const measurement = data.results[0].measurements[0];
-          setAqiData({
-            pm25: measurement.parameter === 'pm25' ? measurement.value : undefined,
-            ozone: measurement.parameter === 'o3' ? measurement.value : undefined,
-            aqi: data.results[0].dominantPollutantIndex,
-          });
+        const url = `https://api.waqi.info/feed/campinas/?token=demo`; // Replace 8645 with the actual location ID
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            // Add other headers if needed
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Received data from OpenAQ API:');
+
+          if (data) {
+            // const measurement = data.results[0].measurements[0];
+            // console.log(measurement.value);
+            setAqiData({
+              // pm25: measurement.parameter === 'pm25' ? measurement.value : undefined,
+              // ozone: measurement.parameter === 'o3' ? measurement.value : undefined,
+              // um100: measurement.parameter === 'um100' ? measurement.value : undefined,
+              aqi: data.data.aqi,
+            });
+          } else {
+            console.error('No results or empty results array.');
+          }
         } else {
-          console.error('No results or empty results array.');
+          console.error('Error fetching data. HTTP Status:', response.status);
         }
       } catch (error) {
         console.error('Error fetching air quality data:', error);
       } finally {
-        setLoading(false); // Set loading to false regardless of success or error
+        setLoading(false);
       }
     };
 
@@ -85,9 +98,77 @@ const HomeAq = () => {
     return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
 
+  const getAqiMessage = () => {
+    const aqiLevel = Number(aqiData.aqi);
+  
+    if (isNaN(aqiLevel)) {
+      return "Unable to determine air quality information."; // Default message for non-numeric or undefined values
+    }
+  
+    if (aqiLevel >= 0 && aqiLevel <= 49) {
+      return "Air quality is good. Enjoy the fresh air!";
+    } else if (aqiLevel >= 50 && aqiLevel <= 99) {
+      return "Moderate air quality. It's generally acceptable, but there may be some pollutants.";
+    } else if (aqiLevel >= 100 && aqiLevel <= 149) {
+      return "Unhealthy for Sensitive Groups. People with respiratory or heart conditions, children, and older adults may be more affected. ";
+    } else if (aqiLevel >= 150 && aqiLevel <= 199) {
+      return "Unhealthy air quality. Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects.";
+    } else if (aqiLevel >= 200 && aqiLevel <= 299) {
+      return "Very Unhealthy air quality. Health alert: everyone may experience more serious health effects.";
+    } else if (aqiLevel >= 300) {
+      return "Hazardous air quality. Health warnings of emergency conditions; the entire population is more likely to be affected.";
+    } else {
+      return "Unable to determine air quality information."; // Default message for unknown values
+    }
+  };
+  
+
   const getAqiImage = () => {
-    const aqiLevel = aqiData.aqi;
-    return aqiImages[aqiLevel] || good;
+    const aqiLevel = Number(aqiData.aqi);
+
+    if (isNaN(aqiLevel)) {
+      return good; // Default image for non-numeric or undefined values
+    }
+
+    if (aqiLevel >= 0 && aqiLevel <= 49) {
+      return aqiImages[0]; // Good
+    } else if (aqiLevel >= 50 && aqiLevel <= 99) {
+      return aqiImages[1]; // Moderate
+    } else if (aqiLevel >= 100 && aqiLevel <= 149) {
+      return aqiImages[3]; // Unhealthy for Sensitive Groups
+    } else if (aqiLevel >= 150 && aqiLevel <= 199) {
+      return aqiImages[2]; // Unhealthy
+    } else if (aqiLevel >= 200 && aqiLevel <= 299) {
+      return aqiImages[4]; // Very Unhealthy
+    } else if (aqiLevel >= 300) {
+      return aqiImages[5]; // Hazardous
+    } else {
+      return good; // Default image for unknown values
+    }
+  };
+
+  const getAqiTextColor = () => {
+    const aqiLevel = Number(aqiData.aqi);
+
+    if (isNaN(aqiLevel)) {
+      return '#000000'; // Default color for non-numeric or undefined values
+    }
+
+    if (aqiLevel >= 0 && aqiLevel <= 49) {
+      return '#40A43F'; // Good
+    } else if (aqiLevel >= 50 && aqiLevel <= 99) {
+      return '#F8B50D'; // Moderate
+    } else if (aqiLevel >= 100 && aqiLevel <= 149) {
+      return '#F38337'; // Unhealthy for Sensitive Groups
+    } else if (aqiLevel >= 150 && aqiLevel <= 199) {
+      return '#EF0009'; // Unhealthy
+    } else if (aqiLevel >= 200 && aqiLevel <= 299) {
+      return '#AF2AA7'; // Very Unhealthy
+    } else if (aqiLevel >= 300) {
+      return '#B00003'; // Hazardous
+    } else {
+      return '#000000'; // Default color for unknown values
+    }
   };
 
   return (
@@ -101,11 +182,16 @@ const HomeAq = () => {
         <Text>Loading...</Text>
       ) : (
         <>
-          <Text style={styles.aqi}> The Air Quality is <Text style={styles.aqititle}> {aqiData.aqi || 'N/A'} </Text> </Text>
+          <Text style={styles.aqi}>
+            The Air Quality is{' '}
+            <Text style={{ ...styles.aqititle, color: getAqiTextColor() }}>{aqiData.aqi || 'N/A'} </Text>
+          </Text>
           <Image style={styles.chart} source={getAqiImage()} />
-          <Image style={styles.index} source={Group_167} />
-          <View style={styles.messagetest}>
-            <Text style={styles.messagetext}> Good air quality does not require any advisory whatsoever. Remember to stay hydrated.</Text>
+          {/* <Image style={styles.index} source={Group_167} /> */}
+          <View style={{ ...styles.messagetest, backgroundColor: getAqiTextColor() }}>
+          <Text style={{ ...styles.messagetext }}>
+  {getAqiMessage()}
+</Text>
           </View>
         </>
       )}
@@ -121,7 +207,7 @@ const HomeAq = () => {
           </Pressable>
 
           <Pressable onPress={() => console.log('More pressed')} style={styles.IconBehave}>
-            <Image source={more} style={styles.IconBehave} />
+            <Image source={more} style={styles.IconBehave2} />
           </Pressable>
         </View>
       </View>
@@ -212,7 +298,11 @@ const styles = StyleSheet.create({
   },
   IconBehave: {
     marginTop: 6,
-    marginLeft: 15,
+    marginLeft: 10,
+  },
+  IconBehave2: {
+    marginTop: 6,
+    marginLeft: 5,
   },
 });
 
