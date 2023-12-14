@@ -10,13 +10,14 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 
 const Signup = ({navigation}) => {
 
-    const onPress = () => { //nav criar conta p login
+    /*const onPress = () => { //teste -> login
+        navigation.navigate('Login');
+    };*/
+
+    const onPress2 = () => { //ja tem conta -> login
         navigation.navigate('Login');
     };
 
-    const onPress2 = () => { //nav ja tem conta, ir p login
-        navigation.navigate('Login');
-    };
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -96,8 +97,11 @@ const Signup = ({navigation}) => {
                     }}>
         </TextInput>
         
-        <Checkbox style={styles.checkbox}>  </Checkbox>
-
+        <View style={styles.view2}>
+            <Checkbox style={styles.checkbox}>  </Checkbox>
+            <Text style={styles.text3}> By signing up, you agree with the </Text>
+            <Text style={styles.text4}> Terms of Service </Text>
+        </View>
         {loading ? (
             <ActivityIndicator size="large" color="#0000ff" />
         ) : (
@@ -112,9 +116,9 @@ const Signup = ({navigation}) => {
         )}
 
         <View style={styles.view2}>
-         <Text style={styles.text}> Already have an account? </Text>
-         <Text onPress={onPress2}style={styles.text2}> Sign in </Text>
-         </View>
+            <Text style={styles.text}> Already have an account? </Text>
+            <Text onPress={onPress2} style={styles.text2}> Sign in </Text>
+        </View>
     </View>
 
   )
@@ -178,6 +182,7 @@ const styles = StyleSheet.create({
         height: 25,
         marginTop: 20,
         marginLeft: 35,
+        marginRight: 0,
         borderColor: "#737373",
         borderRadius: 6.5,
         borderWidth: 0.5,
@@ -187,14 +192,34 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#737373',
         marginLeft: 35,
+        marginRight: 0,
         marginTop: 10,
     },
     text2: {
-        fontWeight: '700', //700 a bit bolder
+        fontWeight: '600', //bit bolder
         fontSize: 16,
         color: '#0A1B47',
-        marginRight: 160,
+        marginRight: 170,
+        marginLeft: -5,
         marginTop: 10
+    },
+    text3: {
+        fontWeight: '500', //500 medium sized
+        fontSize: 12.5,
+        color: '#737373',
+        marginLeft: 5,
+        marginRight: 0,
+        marginTop: 25,
+    },
+    text4: {
+        fontWeight: '600', //700 a bit bolder
+        fontSize: 12.5,
+        color: '#0A1B47',
+        marginRight: 160,
+        marginLeft: -5,
+        marginTop: 25,
+        textDecorationLine: 'underline',
+
     },
     view2: {
         flexDirection: 'row',

@@ -165,11 +165,11 @@ const styles = StyleSheet.create({
     },
     text: {
         fontWeight: '400', //500 medium sized
-        fontSize: 17,
+        fontSize: 16,
         color: '#737373',
-        marginLeft: 7,
-        marginTop: 22,
-        marginRight: 220,
+        marginLeft: 0,
+        marginTop: 23,
+        marginRight: 217,
     },
     text2: {
         fontWeight: '700', //700 a bit bolder

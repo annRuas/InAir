@@ -1,0 +1,2 @@
+Para executar essa aplicação, basta digitar o comando 'npx expo run', ter o aplicativo Expo Go instalado e
+então fazer scan do cógigo QR gerado.

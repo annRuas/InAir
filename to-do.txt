@@ -1,0 +1,16 @@
+// this is a file for you to say little detais you're not doing at the moment because you're prioritizing something more important
+
+
+- Make the Signup and Login CheckBoxes clickable:
+    * Make the Signup checkbox checked state obrigatory;
+    * For that you also have to make a Terms of Service for the app, because it actually is necessary;
+    * Make the remember me actually work.
+
+- Add the 'go back' icons to the screens
+
+- The loading screen when the app is opened (the pretty one)
+    What you might wanna remember about this screen:
+        * Need to download the gradient to use as a background image, because it will be easier than coding a gradient;
+        * There's already a loading property on the Login and Signup for you to use.
+
+- Add the little icons to the inputTexts
