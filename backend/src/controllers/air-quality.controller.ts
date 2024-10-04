@@ -22,8 +22,7 @@ async function airQualityCustom(req: Request, res: Response) {
 
     const response: AxiosResponse = await axios.get(link);
 
-    // const globalIndex: number = response.data.results[0].globalIndex;
-    const globalIndex: number = 150;
+    const globalIndex: number = response.data.results[0].globalIndex;
 
     const usersCollection = collection(firestore, 'users-data');
     const q = query(usersCollection, where('uid', '==', uid));
@@ -31,8 +30,7 @@ async function airQualityCustom(req: Request, res: Response) {
     const doc = await getDocs(q);
 
     const userInfo: any = doc.docs[0].data();
-    console.log(userInfo);
-    console.log('ok');
+
     if((userInfo.age < 18 || userInfo.age > 60 || userInfo.hasAsthma || userInfo.hasCOPD || userInfo.hasBronchitis) && globalIndex > 100) {
         return res.send({globalIndex: globalIndex, message: 'Due to your conditions, there is great risks in going out today. You should avoid high trafic roads.'});
     } else {

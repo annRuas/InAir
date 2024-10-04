@@ -5,11 +5,13 @@ import Checkbox  from 'expo-checkbox'
 import { router, useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
 import Constants from 'expo-constants';
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { FIREBASE_AUTH } from '../firebaseConfig'
+
 export default function Form() {
     const params: any = useLocalSearchParams();
 
-    const { token, uid } = params;
-
+    const { name, email, password } = params;
     const [age, setAge] = useState('')
     const [hasAsthma, setHasAsthma] = useState(false);
     const [hasCOPD, setHasCOPD] = useState(false);
@@ -20,16 +22,23 @@ export default function Form() {
     const handleSignUp = async () => {
         setLoading(true);
         try{
-            const data = await axios.post(`http://${Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':8000')}/users/create-preferences`, {
-                age: age,
-                hasAsthma: hasAsthma,
-                hasCOPD: hasCOPD,
-                hasBronchitis: hasBronchitis,
-                uid: uid
+            const diseases = [];
+            if(hasBronchitis) diseases.push('Bronchitis');
+            if(hasAsthma)     diseases.push('Asthma');
+            if(hasCOPD)       diseases.push('COPD');
+            const response = await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+            const uid = response.user.uid;
+            const token = await response.user.getIdToken();
+
+            await axios.post(`http://${Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':8000')}/users/create-preferences`, {
+                name,
+                age,
+                diseases,
+                uid,
+                email
             }, { headers: {
                 authorization: token
             }});
-            console.log(uid);
 
             return router.replace({pathname: '/Home', params: {isLoggedIn: 1, uid: uid}});
         }catch(error){

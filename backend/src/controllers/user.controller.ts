@@ -6,8 +6,6 @@ import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 async function createPreferences(req: Request, res: Response) {
     const userPreferences: UserPreferences = req.body;
 
-    console.log(userPreferences);
-
     const usersCollection = collection(firestore, 'users-data');
 
     await addDoc(usersCollection, userPreferences);
@@ -16,7 +14,9 @@ async function createPreferences(req: Request, res: Response) {
 }
 
 
-async function hasPreferences(req: Request, res: Response) {
+
+
+async function getPreferences(req: Request, res: Response) {
     const { uid } = req.body;
 
     const usersCollection = collection(firestore, 'users-data');
@@ -25,14 +25,10 @@ async function hasPreferences(req: Request, res: Response) {
     
     const doc = await getDocs(q);
 
-    if(doc.docs.length === 0) {
-        return res.send({message: 'not found'});
-    }
 
-    return res.send({message: 'found'});
-
+    return res.send(doc.docs[0].data());
 }
 
 
 
-export { createPreferences, hasPreferences }
+export { createPreferences, getPreferences }

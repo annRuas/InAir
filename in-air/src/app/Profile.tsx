@@ -33,7 +33,7 @@ export default function UserPrefereces() {
                     <TouchableOpacity style={styles.button}>
                         <Text style={{
                             color: "#FFF", fontWeight: 'bold', textAlign: 'center', fontSize: 18, shadowOffset: {
-                                width: 0,
+                                width: 250,
                                 height: 2,
                             }
                         }}>Create Account</Text>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 15,
         marginLeft: -30,
-        width: 300,
+        width: 250,
         height: 50,
         padding: 13,
     },

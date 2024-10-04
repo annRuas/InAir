@@ -4,7 +4,7 @@ import { COLORS } from '../../constants/colors';
 import Checkbox from "expo-checkbox"
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { FIREBASE_AUTH } from '../firebaseConfig'
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 import axios from 'axios';
 import Constants from 'expo-constants';
 
@@ -21,16 +21,8 @@ export default function Login() {
             const response = await signInWithEmailAndPassword(auth, email, password);
 
             const uid = response.user.uid;
-            const token = await response.user.getIdToken();
 
-            const hasPreferences = await axios.post(`http://${Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':8000')}/users/hasPreferences`, {
-                uid: response.user.uid
-            });
-
-            if(hasPreferences.data.message === 'found') {
-                return router.replace({pathname: '/Home', params: {isLoggedIn: 1, uid: response.user.uid}});
-            } 
-            return router.replace({pathname: '/Form', params: { token: token, uid: uid }});
+            return router.replace({pathname: '/Home', params: {isLoggedIn: 1, uid}});
         }catch(error){
             console.log(error);
         } finally {
@@ -48,7 +40,7 @@ export default function Login() {
                                 borderColor: "#737373",
                                 borderRadius: 16,
                                 borderWidth: 0.5,
-                                marginTop: 80,
+                                marginTop: 70,
                                 marginLeft: 35,
                                 paddingLeft: 15,
                                 fontSize: 18,
@@ -87,7 +79,9 @@ export default function Login() {
         
         <View style={styles.view2}>
          <Text style={styles.text3}> Already have an account? </Text>
-         <Text style={styles.text2}> Sign up </Text>
+         <Link href="/Signup" asChild>
+            <Text style={styles.text2}> Sign up </Text>
+         </Link>
          </View>
 
     </View>
@@ -108,7 +102,7 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: 'bold',
         marginLeft: 32,
-        marginTop: 128,
+        marginTop: 50,
         shadowColor: '#000',
             shadowOffset: {
             width: 0,

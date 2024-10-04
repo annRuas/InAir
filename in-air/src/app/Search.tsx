@@ -4,9 +4,8 @@ import { COLORS } from '../../constants/colors'
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Link, router } from 'expo-router';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { Aqi } from '../components/Aqi';
+import { SearchModal } from '../components/SearchModal';
 
 export default function Search() {
     const [input, setInput] = useState<string>("");
@@ -106,7 +105,7 @@ export default function Search() {
                             <Text style={{ fontSize: 16, fontWeight: 'bold', paddingRight: 90, verticalAlign: 'middle',  textAlign: 'center' }}> {selectedAddress} </Text>
                             </View>
                         <View style={{marginBottom: 25}}></View>
-                        <Aqi coordinates={selectedCoordinates} locationMessage={selectedAddress}/>
+                        <SearchModal coordinates={selectedCoordinates} locationName={selectedAddress}/>
                         <View style={{marginBottom: 100}}></View>
                     </View>
             </View>
@@ -114,32 +113,3 @@ export default function Search() {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-
-    locs:{
-        width: 200,
-    },
-
-    button: {
-        backgroundColor: "#494969",
-        borderRadius: 14,
-        textAlign: 'center',
-        marginTop: 30,
-        width: 150,
-        height: 45,
-        padding: 12,
-
-    },
-    instructions: {
-        textAlign: "center",
-        color: COLORS.black,
-        marginBottom: 5,
-        fontFamily: "inter_semibold"
-    },
-    backgroundImage: {
-        flex: 1,
-        resizeMode: 'cover', // if not the way I want it, use 'stretch' 
-        justifyContent: 'center',
-    }
-})

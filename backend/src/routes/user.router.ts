@@ -6,6 +6,6 @@ const userRouter: Router = express.Router();
 
 userRouter.post('/create-preferences', userController.createPreferences);
 
-userRouter.post('/hasPreferences', userController.hasPreferences);
+userRouter.post('/getPreferences', userController.getPreferences);
 
 export { userRouter }

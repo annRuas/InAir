@@ -2,27 +2,22 @@ import { TouchableOpacity, StyleSheet, Text, View, TextInput, ActivityIndicator 
 import React, { useState } from 'react'
 import { COLORS } from '../../constants/colors'
 import Checkbox  from 'expo-checkbox'
-import { FIREBASE_AUTH } from '../firebaseConfig'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { router } from 'expo-router'
+import { Link, router } from 'expo-router'
 
 
 export default function Signup() {
     
-
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const auth = FIREBASE_AUTH;
-
+    const [hasAcceptedTermsOfService, setHasAcceptedTermsOfService] = useState(false);
     const handleSignUp = async () => {
         setLoading(true);
-        try{
-            const response = await createUserWithEmailAndPassword(auth, email, password);
-            const uid = response.user.uid;
-            const token = await response.user.getIdToken();
+        try {
 
-            router.push({pathname: "/Form", params: { token: token, uid: uid }});
+
+            router.push({pathname: "/Form", params: { email, password, name }});
         }catch(error){
             console.log(error);
         } finally {
@@ -34,13 +29,15 @@ export default function Signup() {
                 <Text style={styles.title}> Create an account  </Text>
         
                 <TextInput placeholder='Name'
+                                value={name}
+                                onChangeText={text => setName(text)}
                             placeholderTextColor={COLORS.mediumgray} style={{
                                 height: 50,
                                 width: 322,
                                 borderColor: "#737373",
                                 borderRadius: 16,
                                 borderWidth: 0.5,
-                                marginTop: 80,
+                                marginTop: 70,
                                 marginLeft: 35,
                                 paddingLeft: 15,
                                 fontSize: 18,
@@ -88,9 +85,9 @@ export default function Signup() {
                 </TextInput>
                 
                 <View style={styles.view2}>
-                    <Checkbox style={styles.checkbox}>  </Checkbox>
-                    <Text style={styles.text3}> By signing up, you agree with the </Text>
-                    <Text style={styles.text4}> Terms of Service </Text>
+                    <Checkbox style={styles.checkbox} value={hasAcceptedTermsOfService} onValueChange={setHasAcceptedTermsOfService}>  </Checkbox>
+                    <Text style={styles.text3}> By signing up, you agree with the  </Text>
+                    <Text style={styles.text4}>Terms of Service </Text>
                 </View>
                 {loading ? (
                     <ActivityIndicator size="large" color="#0000ff" />
@@ -105,7 +102,9 @@ export default function Signup() {
         
                 <View style={styles.view2}>
                     <Text style={styles.text}> Already have an account? </Text>
+                    <Link href="/Login" asChild> 
                     <Text  style={styles.text2}> Sign in </Text>
+                    </Link>
                 </View>
             </View>
     )
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: 'bold',
         marginLeft: 32,
-        marginTop: 128,
+        marginTop: 50,
         shadowColor: '#000',
             shadowOffset: {
             width: 0,
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
         borderColor: COLORS.gray,
         borderRadius: 16,
         borderWidth: 0.5,
-        marginTop: 34,
+        marginTop: 30,
         marginLeft: 246,
     },
     emailicon: {        
