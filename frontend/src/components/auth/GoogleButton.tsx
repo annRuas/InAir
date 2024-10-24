@@ -8,7 +8,7 @@ type GoogleButtonProps = {
 
 export const GoogleButton: FC<GoogleButtonProps> = ({login, ...props}) => {
     return (
-        <Pressable  className='self-center justify-center items-center w-80 bg-white py-4 px-12 rounded-3xl shadow-md shadow-black flex-row' {...props}>
+        <Pressable  className='self-center justify-center items-center w-10/12 bg-white py-4 px-12 rounded-3xl shadow-md shadow-black flex-row' {...props}>
             <View className='px-2'>
                 <AntDesign name="google" size={24} color="black" />
             </View>

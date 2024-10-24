@@ -31,11 +31,11 @@ export default function Signup() {
         }
     }
     return (
-        <View className='flex-1'>
+        <View className='flex-1 mb-10 justify-center gap-y-4'>
             <TitleText className='mt-20'>
                 Create an account
             </TitleText>
-            <View className='mx-7 flex-1 mb-10 justify-center gap-y-4'>
+            <View className='mx-7 gap-y-4'>
                 <TextInputImage placeholder='Name'>
                     <FontAwesome name="user" size={22} color="black" />
                 </TextInputImage>
@@ -48,24 +48,26 @@ export default function Signup() {
                 <TextInputImage placeholder='Confirm password'>
                     <FontAwesome name="lock" size={24} color="black" />
                 </TextInputImage>
+
                 <View className='flex-row items-center justify-center'>
                     <Checkbox className='mx-2' value={hasAcceptedTermsOfService} onValueChange={setHasAcceptedTermsOfService} />
                     <TextParagraph small>
                         By signing up, you agree with the <TextHighlighted underline>Terms of Service</TextHighlighted>
                     </TextParagraph>
                 </View>
-                <View className='my-10' />
-                <Button large> Sign Up</Button>
-                <TextParagraph>
-                    Already have an account?
-                    <Link href="/auth/login">
-                        <TextHighlighted> Sign in </TextHighlighted>
-                    </Link>
-                </TextParagraph>
-
-                <SeparatorText>or</SeparatorText>
-                <GoogleButton />
             </View>
+
+            <View className='my-10' />
+            <Button large> Sign Up</Button>
+            <TextParagraph>
+                Already have an account?
+                <Link href="/auth/login">
+                    <TextHighlighted> Sign in </TextHighlighted>
+                </Link>
+            </TextParagraph>
+
+            <SeparatorText>or</SeparatorText>
+            <GoogleButton />
         </View>
     )
 }

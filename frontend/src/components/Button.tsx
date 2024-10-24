@@ -14,7 +14,7 @@ export const Button = forwardRef<any, ButtonProps>(({ children, white = false, l
     
     return (
             <Pressable ref={ref} {...props}>
-                <LinearGradient className={clsx("self-center py-4 px-12 rounded-3xl shadow-md shadow-black", large ? 'w-80' : null)} start={[0, 1]} end={[1, 0]} colors={colors}>
+                <LinearGradient className={clsx("self-center py-4 px-12 rounded-3xl shadow-md shadow-black", large ? 'w-10/12' : null)} start={[0, 1]} end={[1, 0]} colors={colors}>
                     <Text className={clsx('font-bold text-center text-lg', (!white) && 'text-white')}> {children} </Text>
                 </LinearGradient>
             </Pressable>

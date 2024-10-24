@@ -1,10 +1,9 @@
-import { View} from 'react-native'
+import { View } from 'react-native'
 import React, { useState } from 'react'
 import Checkbox from "expo-checkbox"
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { FIREBASE_AUTH } from '../../firebaseConfig'
 import { Link, router } from 'expo-router';
-
 import { TitleText } from '../../components/TitleText';
 import { TextInputImage } from '../../components/TextInputImage';
 import FontAwesome from '@expo/vector-icons/build/FontAwesome';
@@ -37,37 +36,37 @@ export default function Login() {
         }
     }
     return (
-        <View className='flex-1'>
-            <TitleText className='mt-20'>
+        <View className='flex-1 mb-20 justify-center gap-y-4'>
+            <TitleText>
                 Log In
             </TitleText>
-            <View className='mx-7 flex-1 mb-20 justify-center gap-y-4'>
+            <View className='mx-7 gap-y-4'>
                 <TextInputImage placeholder='email@example.com'>
                     <FontAwesome name="envelope" size={18} color="black" />
                 </TextInputImage>
                 <TextInputImage placeholder='Password'>
                     <FontAwesome name="lock" size={24} color="black" />
                 </TextInputImage>
-
                 <View className='flex-row items-center justify-start'>
                     <Checkbox className='mx-2' value={rememberMe} onValueChange={setRememberMe} />
                     <TextParagraph small>
                         Remember me
                     </TextParagraph>
                 </View>
-                <View className='my-5'/>
-                <Button large> Sign In</Button>
-                <TextParagraph>
-                    Don't have an account?
-                    <Link href="/auth/signup">
-                        <TextHighlighted> Sign Up</TextHighlighted>
-                    </Link>
-                </TextParagraph>
-
-                <SeparatorText>or</SeparatorText>
-
-                <GoogleButton login/>
             </View>
+
+            <View className='my-5' />
+            <Button large> Sign In</Button>
+            <TextParagraph>
+                Don't have an account?
+                <Link href="/auth/signup">
+                    <TextHighlighted> Sign Up</TextHighlighted>
+                </Link>
+            </TextParagraph>
+
+            <SeparatorText>or</SeparatorText>
+
+            <GoogleButton login />
         </View>
     )
 }
