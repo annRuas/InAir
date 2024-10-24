@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { ImageBackground, Text } from 'react-native';
+import { TitleText } from '../TitleText';
 
 type WelcomeLayoutProps = {
   marginBottomSmall?: boolean
@@ -9,7 +10,7 @@ type WelcomeLayoutProps = {
 export const WelcomeLayout: React.FC<WelcomeLayoutProps> = ({ children, marginBottomSmall }) => {
   return (
 		<ImageBackground className='flex-1' source={require('../../icons/InAir_logobg.png')}>
-        <Text className={clsx("font-bold text-4xl text-center mt-36", marginBottomSmall ? 'mb-5' : 'mb-10')}> Hello </Text>
+        <TitleText className={clsx('mt-36', marginBottomSmall ? 'mb-5' : 'mb-10')}> Hello </TitleText>
         {children}
     </ImageBackground>
   );
