@@ -37,7 +37,7 @@ export default function Login() {
     }
     return (
         <View className='flex-1 mb-20 justify-center gap-y-4'>
-            <TitleText>
+            <TitleText className='ml-7'>
                 Log In
             </TitleText>
             <View className='mx-7 gap-y-4'>
@@ -57,7 +57,7 @@ export default function Login() {
 
             <View className='my-5' />
             <Button large> Sign In</Button>
-            <TextParagraph>
+            <TextParagraph small>
                 Don't have an account?
                 <Link href="/auth/signup">
                     <TextHighlighted> Sign Up</TextHighlighted>

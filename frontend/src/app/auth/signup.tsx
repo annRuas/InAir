@@ -32,7 +32,7 @@ export default function Signup() {
     }
     return (
         <View className='flex-1 mb-10 justify-center gap-y-4'>
-            <TitleText className='mt-20'>
+            <TitleText className='mx-7 mt-20'>
                 Create an account
             </TitleText>
             <View className='mx-7 gap-y-4'>
@@ -59,7 +59,7 @@ export default function Signup() {
 
             <View className='my-10' />
             <Button large> Sign Up</Button>
-            <TextParagraph>
+            <TextParagraph small>
                 Already have an account?
                 <Link href="/auth/login">
                     <TextHighlighted> Sign in </TextHighlighted>
