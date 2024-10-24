@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { FC } from 'react';
 import { Text } from 'react-native';
 
 
@@ -7,7 +8,7 @@ type TextHighlightedProps = {
 	underline?: boolean
   }
 
-export const TextHighlighted: React.FC<TextHighlightedProps> = ({underline, children}) => {
+export const TextHighlighted: FC<TextHighlightedProps> = ({underline, children}) => {
 	return (
 		<Text className={clsx('text-blue-950 font-bold', underline ? 'underline' : null)}>
 			{children}

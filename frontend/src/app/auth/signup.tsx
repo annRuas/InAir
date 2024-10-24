@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import React, { useState } from 'react'
 import Checkbox from 'expo-checkbox'
-import { router } from 'expo-router'
+import { Link, router } from 'expo-router'
 import FontAwesome from '@expo/vector-icons/build/FontAwesome'
 import { TextInputImage } from '../../components/TextInputImage'
 import { Button } from '../../components/Button'
@@ -31,11 +31,11 @@ export default function Signup() {
         }
     }
     return (
-        <View>
-            <TitleText className='mt-10 mb-14'>
+        <View className='flex-1'>
+            <TitleText className='mt-20'>
                 Create an account
             </TitleText>
-            <View className='gap-y-4'>
+            <View className='mx-7 flex-1 mb-10 justify-center gap-y-4'>
                 <TextInputImage placeholder='Name'>
                     <FontAwesome name="user" size={22} color="black" />
                 </TextInputImage>
@@ -57,11 +57,14 @@ export default function Signup() {
                 <View className='my-10' />
                 <Button large> Sign Up</Button>
                 <TextParagraph>
-                    Already have an account? <TextHighlighted>Sign in </TextHighlighted>
+                    Already have an account?
+                    <Link href="/auth/login">
+                        <TextHighlighted> Sign in </TextHighlighted>
+                    </Link>
                 </TextParagraph>
 
                 <SeparatorText>or</SeparatorText>
-                <GoogleButton/>
+                <GoogleButton />
             </View>
         </View>
     )

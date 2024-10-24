@@ -10,7 +10,7 @@ interface TextInputImageProps {
 export const TextInputImage: FC<TextInputImageProps> = ({ placeholder, children, ...props }) => {
     return (
             <View 
-                className='border border-zinc-500 rounded-2xl flex justify-center items-center flex-row self-center'
+                className='border border-zinc-500 rounded-2xl flex justify-center items-center flex-row'
                 {...props}
             >
                 <View className='pl-3'>

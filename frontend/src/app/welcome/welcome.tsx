@@ -29,8 +29,8 @@ export default function Welcome2() {
 				</Link>
 				<TextParagraph className='text-center text-xl text-zinc-500'>
 						<Text className="px-5">Already have an account?</Text>
-						<Link href="/Login" asChild>
-								<Text className='text-blue-950 font-bold'> Sign in</Text>
+						<Link href="/auth/login">
+								<TextHighlighted> Sign in</TextHighlighted>
 						</Link>
 				</TextParagraph>
 			</View>
