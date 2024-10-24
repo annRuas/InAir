@@ -17,7 +17,7 @@ export const TextInputImage: FC<TextInputImageProps> = ({ placeholder, children,
                     {children}
                 </View>
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-                    <TextInput className='w-80 p-2' placeholder={placeholder} placeholderTextColor={'rgb(100 116 139)'} />
+                    <TextInput className='w-80  py-3 pl-2' placeholder={placeholder} placeholderTextColor={'rgb(100 116 139)'} />
                 </KeyboardAvoidingView>
             </View>
     )
