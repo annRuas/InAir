@@ -43,8 +43,9 @@ export default function Home() {
 					const userDataResponse = await axios.post(`http://${Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':8000')}/users/getPreferences`, {
 						uid
 					});
- 
-					setAqiInfos([aqiInfos[0]].concat(userDataResponse.data.locations));
+					if(userDataResponse.data.locations !== undefined) {
+						setAqiInfos([aqiInfos[0]].concat(userDataResponse.data.locations));
+					}
 				} 
 
 			} catch (error) {
@@ -65,6 +66,7 @@ export default function Home() {
 	}
 
 	const Slider = () => {
+		console.log(aqiInfos)
 		return (
 			<View>
 				<FlatList showsHorizontalScrollIndicator={false} pagingEnabled horizontal data={aqiInfos} renderItem={({item, index}) => <GraphModel locationName={item.locationName} latitude={item.latitude} longitude={item.longitude} index={index}></GraphModel>}/>
