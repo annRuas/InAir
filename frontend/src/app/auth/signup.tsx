@@ -10,42 +10,32 @@ import { TextParagraph } from '../../components/TextParagraph'
 import { TextHighlighted } from '../../components/TextHighlighted'
 import { SeparatorText } from '../../components/SeparatorText'
 import { GoogleButton } from '../../components/auth/GoogleButton'
+import { useForm } from 'react-hook-form'
 
 export default function Signup() {
-
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [hasAcceptedTermsOfService, setHasAcceptedTermsOfService] = useState(false);
-    const handleSignUp = async () => {
-        setLoading(true);
-        try {
-
-
-            router.push({ pathname: "/Form", params: { email, password, name } });
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
+    const { control, handleSubmit } = useForm();
+    const onSubmit: any = ({email, password, name}) => {
+        router.push({ pathname: "/Form", params: { email, password, name } });
     }
+
+    const [hasAcceptedTermsOfService, setHasAcceptedTermsOfService] = useState(false);
+
     return (
         <View className='flex-1 mb-10 justify-center gap-y-4'>
             <TitleText className='mx-7 mt-20'>
                 Create an account
             </TitleText>
             <View className='mx-7 gap-y-4'>
-                <TextInputImage placeholder='Name'>
+                <TextInputImage control={control} name='user' placeholder='Name'>
                     <FontAwesome name="user" size={22} color="black" />
                 </TextInputImage>
-                <TextInputImage placeholder='email@example.com'>
+                <TextInputImage control={control} name='email' placeholder='email@example.com'>
                     <FontAwesome name="envelope" size={18} color="black" />
                 </TextInputImage>
-                <TextInputImage placeholder='Password'>
+                <TextInputImage password control={control} name='password' placeholder='Password'>
                     <FontAwesome name="lock" size={24} color="black" />
                 </TextInputImage>
-                <TextInputImage placeholder='Confirm password'>
+                <TextInputImage password control={control} name='passwordConfirm' placeholder='Confirm password'>
                     <FontAwesome name="lock" size={24} color="black" />
                 </TextInputImage>
 
@@ -58,7 +48,7 @@ export default function Signup() {
             </View>
 
             <View className='my-10' />
-            <Button large> Sign Up</Button>
+            <Button onSubmit={onSubmit} handleSubmit={handleSubmit} large> Sign Up</Button>
             <TextParagraph small>
                 Already have an account?
                 <Link href="/auth/login">
