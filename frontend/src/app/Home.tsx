@@ -43,7 +43,7 @@ export default function Home() {
 					const userDataResponse = await axios.post(`http://${Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':8000')}/users/getPreferences`, {
 						uid
 					});
-
+ 
 					setAqiInfos([aqiInfos[0]].concat(userDataResponse.data.locations));
 				} 
 
@@ -88,7 +88,8 @@ export default function Home() {
 						setGlobalIndex(aqiInfo.globalIndex);
 						setCustomMessage(aqiInfo.message);
 					} else {
-						setGlobalIndex(await getAqiLevel(longitude, longitude));
+						console.log('here on not')
+						setGlobalIndex(await getAqiLevel(latitude, longitude));
 					}
 	
 					const { color, message, classification, classificationMessage } = getAqiInfo(globalIndex);
