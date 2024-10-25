@@ -8,4 +8,6 @@ userRouter.post('/create-preferences', userController.createPreferences);
 
 userRouter.post('/getPreferences', userController.getPreferences);
 
+userRouter.post('/add-location', userController.addLocation);
+
 export { userRouter }

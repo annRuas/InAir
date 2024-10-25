@@ -6,8 +6,11 @@ import Constants from 'expo-constants';
 import { MaterialIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { SearchModal } from '../components/SearchModal';
+import { useLocalSearchParams } from 'expo-router';
 
 export default function Search() {
+    const params: any = useLocalSearchParams();
+
     const [input, setInput] = useState<string>("");
     const [data, setData] = useState<any>();
     const [locationModal, setLocationModal] = useState(false);
@@ -105,7 +108,7 @@ export default function Search() {
                             <Text style={{ fontSize: 16, fontWeight: 'bold', paddingRight: 90, verticalAlign: 'middle',  textAlign: 'center' }}> {selectedAddress} </Text>
                             </View>
                         <View style={{marginBottom: 25}}></View>
-                        <SearchModal coordinates={selectedCoordinates} locationName={selectedAddress}/>
+                        <SearchModal isLoggedIn={params.isLoggedIn} setLocationModal={setLocationModal} uid={params.uid} coordinates={selectedCoordinates} locationName={selectedAddress}/>
                         <View style={{marginBottom: 100}}></View>
                     </View>
             </View>

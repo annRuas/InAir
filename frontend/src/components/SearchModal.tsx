@@ -8,9 +8,12 @@ import { getAqiLevel, getAqiLevelCustom } from '../actions/getAqiLevel';
 import { getAqiInfo } from '../utils/getAqiInfo';
 import { AirQualityHeaderMessage } from './AirQualityHeaderMessage';
 import { InfoMessageBox } from './InfoMessageBox';
+import axios from 'axios';
+import Constants from 'expo-constants';
 
-export function SearchModal(props: SearchModalProps) {
-    const {uid, isLoggedIn, coordinates, locationName} = props;
+export function SearchModal(props: any) {
+    const {uid, isLoggedIn, setLocationModal, coordinates, locationName} = props;
+    console.log(uid);
     const [longitute, latitude] = coordinates;
     const [isModalActive, setIsModalActive] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +26,7 @@ export function SearchModal(props: SearchModalProps) {
     useEffect(() => {
 		const fetchAqiData = async () => {
 			try {
-				if (isLoggedIn) {
+				if (Boolean(Number(isLoggedIn))) {
 					const aqiInfo = await getAqiLevelCustom(latitude, longitute, uid);
 					setGlobalIndex(aqiInfo.globalIndex);
 				} else {
@@ -66,7 +69,20 @@ export function SearchModal(props: SearchModalProps) {
 
             <View style={{ alignItems: 'center' }}>
                 <TouchableOpacity
-                    onPress={() => setIsModalActive(true)}
+                    onPress={ async () => {
+                        if(isLoggedIn) {
+                            const response = await axios.post(`http://${Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':8000')}/users/add-location`, {
+                                latitude,
+                                longitude: longitute,
+                                uid,
+                                locationName
+                            });
+                            setLocationModal(false);
+                            return
+                        }
+
+                        setIsModalActive(true)
+                    }}
                     style={{
                         backgroundColor: '#494969',
                         borderRadius: 14,
@@ -80,7 +96,7 @@ export function SearchModal(props: SearchModalProps) {
                             width: 0,
                             height: 2,
                         }
-                    }}>Save Location</Text>
+                    }}>Save Location</Text> 
                 </TouchableOpacity>
             </View>
 

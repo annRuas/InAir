@@ -16,7 +16,6 @@ export default function UserPrefereces() {
     
     useEffect(() => {
         const getUserPreferences = async () => {
-            console.log('here');
             const userDataResponse = await axios.post(`http://${Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':8000')}/users/getPreferences`, {
                 uid
             });
