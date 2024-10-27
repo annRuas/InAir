@@ -1,19 +1,21 @@
 import { Request, Response } from "express";
 import { UserPreferences } from "../interfaces/user-preferences.interface";
-import { firestore } from "../firebaseConfig";
+import { firestore } from "../configs/firebaseConfig";
 import { addDoc, collection, getDocs, query, updateDoc, where, doc } from "firebase/firestore";
+import { UserService } from "../services/User.service";
+import { Database } from "../configs/Database";
 
-async function createPreferences(req: Request, res: Response) {
-    const userPreferences: UserPreferences = req.body;
+export async function createUserPreferences(req: Request, res: Response) {
+    const {uid, name, email} = req.body;
 
-    const usersCollection = collection(firestore, 'users-data');
+    const userService = new UserService(new Database(), uid);
 
-    await addDoc(usersCollection, userPreferences);
+    await userService.createPreferences(name, email);
 
-    res.send({'message': 'ok'});
+    res.status(200).send({'message': 'User created.'});
 }
 
-async function addLocation(req: Request, res: Response) {
+export async function addLocation(req: Request, res: Response) {
     const { locationName, latitude, longitude, uid } = req.body;
 
     const usersCollection = collection(firestore, 'users-data');
@@ -46,7 +48,7 @@ async function addLocation(req: Request, res: Response) {
 
 
 
-async function getPreferences(req: Request, res: Response) {
+export async function getPreferences(req: Request, res: Response) {
     const { uid } = req.body;
 
     const usersCollection = collection(firestore, 'users-data');
@@ -58,7 +60,3 @@ async function getPreferences(req: Request, res: Response) {
 
     return res.send(doc.docs[0].data());
 }
-
-
-
-export { createPreferences, getPreferences, addLocation }

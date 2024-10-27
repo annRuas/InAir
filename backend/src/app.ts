@@ -8,6 +8,7 @@ const port = 8000;
 const app: Express = express();
 app.set('trust proxy', true)
 
+// Middlewares
 app.use(express.json());
 
 // Routes
@@ -16,5 +17,5 @@ app.use('/users', userRouter);
 app.use('/maps', mapsRouter);
 
 app.listen(port, () => {
-    console.log('worked');
+    console.log(`Server started on: http://localhost:${port}`);
 })
