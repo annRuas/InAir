@@ -1,16 +1,10 @@
-import { Stack } from 'expo-router';
+import { Slot, Stack } from 'expo-router';
+import { SessionProvider } from '../components/SessionProvider';
 
 export default function Layout() {
 	return (
-		<Stack
-			screenOptions={{
-				title: '',
-				headerTintColor: 'black',
-				headerTitleStyle: {
-					fontWeight: 'bold'
-				},
-				animation: 'fade'
-			}}>
-		</Stack>
+		<SessionProvider>
+			<Slot/>
+		</SessionProvider>
 	);
 }
