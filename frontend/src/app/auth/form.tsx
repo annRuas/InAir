@@ -1,12 +1,11 @@
 import { TouchableOpacity, StyleSheet, Text, View, TextInput, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
-import { COLORS } from '../../constants/colors'
 import Checkbox  from 'expo-checkbox'
 import { router, useLocalSearchParams } from 'expo-router';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { FIREBASE_AUTH } from '../firebaseConfig'
+import { FIREBASE_AUTH } from '../../firebaseConfig'
 
 export default function Form() {
     const params: any = useLocalSearchParams();
@@ -53,7 +52,7 @@ export default function Form() {
                 
                 <TextInput value={age} onChangeText={text => setAge(text)}
                 placeholder='Age'
-                            placeholderTextColor={COLORS.mediumgray} style={{
+                            placeholderTextColor='grey' style={{
                                 height: 50,
                                 width: 322,
                                 borderColor: "#737373",
@@ -118,7 +117,7 @@ const styles = StyleSheet.create({
     input: {
         height: 45,
         width: 322,
-        borderColor: COLORS.gray,
+        borderColor: 'grey',
         borderRadius: 16,
         borderWidth: 0.5,
         marginTop: 20,

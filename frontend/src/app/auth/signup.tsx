@@ -48,11 +48,11 @@ export default function Signup() {
             await createData(email, name, uid);
 
             UserInfo?.signIn(response.user.uid);
+
+            router.replace('/');
         } catch (error) {
             console.log(error);
         }
-
-        //router.push({ pathname: "/Form", params: { email, password, name } });
     }
 
     return (

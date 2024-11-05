@@ -13,12 +13,13 @@ export async function createData(email: string, name: string, uid: string) {
     return response.data;
 }
 
-export async function getUserData(uid: string) {
-    const response = await axiosInstance.get('/users/get-data', {
+export async function getUserInformation(uid: string) {
+    const response = await axiosInstance.get('/users/get-information', {
         headers: {
             uid
-        }
+        },
+        validateStatus: status => ((status >= 200 && status < 300) || status === 404 )
     });
     
-    return response.data;
+    return {data: response.data, status: response.status};
 }

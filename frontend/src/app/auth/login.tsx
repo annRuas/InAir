@@ -1,8 +1,7 @@
 import { View } from 'react-native'
-import React, { useState } from 'react'
-import Checkbox from "expo-checkbox"
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { FIREBASE_AUTH } from '../../firebaseConfig'
+import React, { useContext } from 'react'
+import { Checkbox } from '../../components/Checkbox'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { Link, router } from 'expo-router';
 import { TitleText } from '../../components/TitleText';
 import { TextInputImage } from '../../components/TextInputImage';
@@ -12,22 +11,35 @@ import { Button } from '../../components/Button'
 import { TextHighlighted } from '../../components/TextHighlighted'
 import { SeparatorText } from '../../components/SeparatorText'
 import { GoogleButton } from '../../components/auth/GoogleButton'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { AuthContext } from '../../components/SessionProvider';
 
+const schema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6),
+    rememberMe: z.boolean()
+});
+
+type FormFields = z.infer<typeof schema>
 
 export default function Login() {
-    const { control, handleSubmit } = useForm();
+    const UserInfo = useContext(AuthContext);
+    
+    const { control, handleSubmit, formState: { errors } } = useForm<FormFields>({
+        resolver: zodResolver(schema)
+    });
 
-    const [rememberMe, setRememberMe] = useState(false);
-    const auth = FIREBASE_AUTH;
 
-    const handleSignIn = async ({email, password}) => {
+    const onSubmit: SubmitHandler<FormFields> = async ({email, password, rememberMe}) => {
         try {
+            const auth = getAuth();
             const response = await signInWithEmailAndPassword(auth, email, password);
 
-            const uid = response.user.uid;
-
-            return router.replace({ pathname: '/Home', params: { isLoggedIn: 1, uid } });
+            UserInfo?.signIn(response.user.uid);
+            
+            router.replace('/');
         } catch (error) {
             console.log(error);
         }
@@ -38,14 +50,14 @@ export default function Login() {
                 Log In
             </TitleText>
             <View className='mx-7 gap-y-4'>
-                <TextInputImage control={control} name='email' placeholder='email@example.com'>
+                <TextInputImage wrong={errors?.email !== undefined} control={control} name='email' placeholder='email@example.com'>
                     <FontAwesome name="envelope" size={18} color="black" />
                 </TextInputImage>
-                <TextInputImage password control={control} name='password' placeholder='Password'>
+                <TextInputImage wrong={errors?.password !== undefined} password control={control} name='password' placeholder='Password'>
                     <FontAwesome name="lock" size={24} color="black" />
                 </TextInputImage>
                 <View className='flex-row items-center justify-start'>
-                    <Checkbox className='mx-2' value={rememberMe} onValueChange={setRememberMe} />
+                    <Checkbox control={control} name='rememberMe' className='mr-2'/>
                     <TextParagraph small>
                         Remember me
                     </TextParagraph>
@@ -53,7 +65,7 @@ export default function Login() {
             </View>
 
             <View className='my-5' />
-            <Button onSubmit={handleSignIn} handleSubmit={handleSubmit} large> Sign In</Button>
+            <Button onSubmit={onSubmit} handleSubmit={handleSubmit} large> Sign In</Button>
             <TextParagraph small>
                 Don't have an account?
                 <Link href="/auth/signup">

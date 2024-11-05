@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { FC } from "react";
 import { useController, useFormContext } from "react-hook-form";
 import { KeyboardAvoidingView, Platform, TextInput, View } from "react-native";
@@ -7,11 +8,12 @@ interface TextInputImageProps {
     placeholder?: string
     name: string;
     control: any;
-    password?: boolean
+    password?: boolean;
+    wrong?: boolean;
 }
 
 
-export const TextInputImage: FC<TextInputImageProps> = ({ placeholder, name, password, control, children, ...props }) => {
+export const TextInputImage: FC<TextInputImageProps> = ({ placeholder, name, password, control, children, wrong, ...props }) => {
     const { field } = useController({
         control,
         defaultValue: '',
@@ -20,7 +22,7 @@ export const TextInputImage: FC<TextInputImageProps> = ({ placeholder, name, pas
 
     return (
             <View 
-                className='border border-zinc-400 rounded-2xl flex justify-center items-center flex-row'
+                className={clsx('border border-zinc-400 rounded-2xl flex justify-center items-center flex-row', wrong && 'border-red-600')}
                 {...props}
             >
                 <View className='pl-3'>
