@@ -16,10 +16,11 @@ import { TextError } from '../../components/TextError'
 import { Checkbox } from '../../components/Checkbox'
 import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth'
 import { AuthContext } from '../../components/SessionProvider'
+import { createData } from '../../actions/user.actions'
 
 const schema = z.object({
     email: z.string().email(),
-    password: z.string().min(4),
+    password: z.string().min(6),
     name: z.string().min(5).max(30),
     passwordConfirm: z.string().min(4),
     hasAcceptedTermsOfService: z.boolean().refine((val) => val === true, {message: 'Terms of service needs to be accepted to create an account.'})
@@ -40,13 +41,13 @@ export default function Signup() {
 
     const  onSubmit: SubmitHandler<FormFields> = async ({email, password, name }) => {
         try {
-            console.log(UserInfo?.session);
-
             const auth = getAuth();
             const response = await createUserWithEmailAndPassword(auth, email, password);
-            
-            UserInfo?.signIn({uid: response.user.uid});
+            const { uid } = response.user;
 
+            await createData(email, name, uid);
+
+            UserInfo?.signIn(response.user.uid);
         } catch (error) {
             console.log(error);
         }

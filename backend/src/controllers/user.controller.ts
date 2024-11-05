@@ -57,8 +57,7 @@ export async function addLocation(req: Request, res: Response) {
     }
 
     const newLocations = docContent.locations ? docContent.locations.concat([newSingleLocation]) : [newSingleLocation];
-    console.log(docContent.locations);
-    console.log(newLocations)
+    
     await updateDoc(docReference, {
         locations: newLocations
     });
@@ -66,11 +65,23 @@ export async function addLocation(req: Request, res: Response) {
     return res.send();
 }
 
+export async function getUserInformation(req: Request, res: Response, next: NextFunction) {
+    try {
+        const uid = req.headers.uid as string;
 
+        const userService = new UserService(new Database(), uid);
+
+        const userInformation = await userService.getUserInformation();
+
+        res.status(200).send(userInformation);
+    } catch (error) {
+        next(error);
+    }
+}
 
 
 export async function getUserData(req: Request, res: Response) {
-    const { uid } = req.body;
+    const uid = req.headers.uid as string;
 
     const userService = new UserService(new Database(), uid);
 

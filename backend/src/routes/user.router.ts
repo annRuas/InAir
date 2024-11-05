@@ -13,7 +13,9 @@ userRouter.post('/create-data', validateRequestBody(userDataSchema), userControl
 
 userRouter.post('/create-preferences', validateRequestBody(userPreferencesSchema), userController.createUserPreferences);
 
-userRouter.post('/get-data', userController.getUserData);
+userRouter.get('/get-information', userController.getUserInformation);
+
+userRouter.get('/get-data', userController.getUserData);
 
 userRouter.post('/add-location', userController.addLocation);
 

@@ -2,8 +2,6 @@ import axios from "axios";
 import Constants from "expo-constants";
 
 export async function getAqiLevel(latitude: string, longitude: string) {
-    console.log(latitude);
-    console.log(longitude)
     const response = await axios.post(`http://${Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':8000')}/air-quality/`, {
           latitude,
           longitude,

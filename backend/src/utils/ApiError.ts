@@ -13,4 +13,8 @@ export class ApiError {
     static badRequest(message: ZodError) {
         return new ApiError(400, message);
     }
+
+    static notFound(name: string) {
+        return new ApiError(404, `${name} not found.`);
+    }
 }

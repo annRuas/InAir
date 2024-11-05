@@ -1,20 +1,18 @@
-import { useContext, createContext, type PropsWithChildren, useState } from 'react';
-
-
-
-type UserInfo = {
-    email?: string,
-    uid?: string,
-    name?: string
-    hasCompletedForm?: boolean
-}
+import { createContext, type PropsWithChildren, useState } from 'react';
 
 type AuthContextInterface = {
-    signIn: (UserData: UserInfo) => void;
+    signIn: (uid: string) => void;
     signOut: () => void;
-    session?: UserInfo | null;
+    session: string | null;
 }
 
+type UserInformation = {
+  email: string;
+  name: string;
+  dateOfBirth: Date;
+  residence: string;
+  diseases: string[];
+}
 
 export const AuthContext = createContext<AuthContextInterface>({
     signIn: () => null,
@@ -24,15 +22,13 @@ export const AuthContext = createContext<AuthContextInterface>({
 
 
 export function SessionProvider({ children }: PropsWithChildren) {
-  const [session, setSession] = useState<UserInfo | null>(null);
-
+  const [session, setSession] = useState<string | null>(null);
+  let userData = null
   return (
     <AuthContext.Provider
       value={{
-        signIn: (userData: UserInfo) =>  {
-            console.log('in here man')
-            console.log(userData);
-            setSession(userData)
+        signIn: (uid: string) =>  {
+            setSession(uid)
           },
         signOut: () => setSession(null),
         session,
