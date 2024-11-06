@@ -1,7 +1,7 @@
 import { View } from 'react-native'
 import React, { useContext } from 'react'
 import { Checkbox } from '../../components/Checkbox'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import { Link, router } from 'expo-router';
 import { TitleText } from '../../components/TitleText';
 import { TextInputImage } from '../../components/TextInputImage';
@@ -15,6 +15,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AuthContext } from '../../components/SessionProvider';
+import { auth } from '../../configs/firebaseConfig';
 
 const schema = z.object({
     email: z.string().email(),
@@ -34,7 +35,6 @@ export default function Login() {
 
     const onSubmit: SubmitHandler<FormFields> = async ({email, password, rememberMe}) => {
         try {
-            const auth = getAuth();
             const response = await signInWithEmailAndPassword(auth, email, password);
 
             UserInfo?.signIn(response.user.uid);

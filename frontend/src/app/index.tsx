@@ -2,6 +2,11 @@ import { router, useRootNavigationState } from 'expo-router';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../components/SessionProvider';
 import { getUserInformation } from '../actions/user.actions';
+import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from '../configs/firebaseConfig';
+
+initializeApp(firebaseConfig)
+
 export default function Index() {
 	const rootNavigationState = useRootNavigationState()
 	const navigatorReady = rootNavigationState?.key != null
