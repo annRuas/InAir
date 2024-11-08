@@ -1,6 +1,6 @@
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { COLORS } from '../../constants/colors'
+import { COLORS } from '../../../constants/colors'
 import { Link } from 'expo-router'
 
 export default function UserPrefereces() {
@@ -33,7 +33,7 @@ export default function UserPrefereces() {
                     <TouchableOpacity style={styles.button}>
                         <Text style={{
                             color: "#FFF", fontWeight: 'bold', textAlign: 'center', fontSize: 18, shadowOffset: {
-                                width: 0,
+                                width: 250,
                                 height: 2,
                             }
                         }}>Create Account</Text>
@@ -46,14 +46,52 @@ export default function UserPrefereces() {
 }
 
 const styles = StyleSheet.create({
+
+    welcome: {
+        fontSize: 20,
+        textAlign: "center",
+        margin: 5,
+        fontFamily: "inter_semibold"
+    },
     button: {
         backgroundColor: '#494969',
         borderRadius: 14,
         textAlign: 'center',
         marginTop: 15,
         marginLeft: -30,
-        width: 300,
+        width: 250,
         height: 50,
         padding: 13,
+    },
+    instructions: {
+        textAlign: "center",
+        color: COLORS.black,
+        marginBottom: 5,
+    
+        fontFamily: "inter_semibold"
+    },
+    backgroundImage: {
+        flex: 1,
+        resizeMode: 'cover', // if not the way I want it, use 'stretch' 
+        justifyContent: 'center',
+    },
+    text: {
+        fontWeight: '500', //500 medium sized
+        fontSize: 16,
+        color: '#737373',
+        marginLeft: 130,
+        marginTop: 10,
+    },
+    text2: {
+        fontWeight: '700', //700 a bit bolder
+        fontSize: 16,
+        color: '#0A1B47',
+        marginRight: 160,
+        marginTop: 10
+    },
+    view2: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: -5,
     }
 })

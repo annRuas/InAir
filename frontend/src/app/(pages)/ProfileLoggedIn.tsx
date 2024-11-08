@@ -43,7 +43,7 @@ export default function UserPrefereces() {
                 options={{
                 title: 'Profile',
             }}/>
-            <Image source={require('../icons/profile-picture.png')} />
+            <Image source={require('../../icons/profile-picture.png')} />
             <Text style={{
                 ...textBold(32).conditionalStyle, 
                 textShadowColor: 'rgba(0, 0, 0, 0.40)',
