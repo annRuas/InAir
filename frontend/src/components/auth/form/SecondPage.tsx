@@ -2,9 +2,7 @@ import { Dimensions, View } from "react-native"
 import { TextParagraph } from "../../TextParagraph"
 import { Button } from "../../Button"
 import { RadioButton } from "../../RadioButton";
-import { Picker } from "@react-native-picker/picker";
-import { FC, useState } from "react";
-import { AnimatedMenu } from "../../AnimatedMenu";
+import { FC } from "react";
 import { TextInputImage } from "../../TextInputImage";
 import { useForm } from "react-hook-form";
 const { width } = Dimensions.get('screen');
