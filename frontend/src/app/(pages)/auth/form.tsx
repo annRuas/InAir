@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react'
 import { ScrollView, Dimensions, View } from 'react-native'
-import { FirstPage } from '../../components/auth/form/FirstPage'
-import { SecondPage } from '../../components/auth/form/SecondPage'
+import { FirstPage } from '../../../components/auth/form/FirstPage'
+import { SecondPage } from '../../../components/auth/form/SecondPage'
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
-import { ThirdPage } from '../../components/auth/form/ThirdPage';
-import { FourthPage } from '../../components/auth/form/FourthPage';
-import { FifthPage } from '../../components/auth/form/FifthPage';
+import { ThirdPage } from '../../../components/auth/form/ThirdPage';
+import { FourthPage } from '../../../components/auth/form/FourthPage';
+import { FifthPage } from '../../../components/auth/form/FifthPage';
 
 const { width } = Dimensions.get('screen');
 

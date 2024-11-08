@@ -1,11 +1,11 @@
 import { FlatList, ImageBackground, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { COLORS } from '../../constants/colors'
+import { COLORS } from '../../../constants/colors'
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { MaterialIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { SearchModal } from '../components/SearchModal';
+import { SearchModal } from '../../components/SearchModal';
 import { useLocalSearchParams } from 'expo-router';
 
 export default function Search() {

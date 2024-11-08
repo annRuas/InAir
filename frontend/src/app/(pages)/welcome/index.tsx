@@ -1,10 +1,10 @@
 import { View } from 'react-native'
 import React from 'react'
 import { Link } from 'expo-router'
-import { Button } from '../../components/Button'
-import { WelcomeLayout } from '../../components/welcome/WelcomeLayout'
-import { PageIndicatorDots } from '../../components/welcome/PageIndicatorDots'
-import { TextParagraph } from '../../components/TextParagraph'
+import { Button } from '../../../components/Button'
+import { WelcomeLayout } from '../../../components/welcome/WelcomeLayout'
+import { PageIndicatorDots } from '../../../components/welcome/PageIndicatorDots'
+import { TextParagraph } from '../../../components/TextParagraph'
 
 export default function Welcome2() {
 	return (

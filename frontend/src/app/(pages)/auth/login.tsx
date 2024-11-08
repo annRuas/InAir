@@ -1,21 +1,21 @@
 import { View } from 'react-native'
 import React, { useContext } from 'react'
-import { Checkbox } from '../../components/Checkbox'
+import { Checkbox } from '../../../components/Checkbox'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { Link, router } from 'expo-router';
-import { TitleText } from '../../components/TitleText';
-import { TextInputImage } from '../../components/TextInputImage';
+import { TitleText } from '../../../components/TitleText';
+import { TextInputImage } from '../../../components/TextInputImage';
 import FontAwesome from '@expo/vector-icons/build/FontAwesome';
-import { TextParagraph } from '../../components/TextParagraph'
-import { Button } from '../../components/Button'
-import { TextHighlighted } from '../../components/TextHighlighted'
-import { SeparatorText } from '../../components/SeparatorText'
-import { GoogleButton } from '../../components/auth/GoogleButton'
+import { TextParagraph } from '../../../components/TextParagraph'
+import { Button } from '../../../components/Button'
+import { TextHighlighted } from '../../../components/TextHighlighted'
+import { SeparatorText } from '../../../components/SeparatorText'
+import { GoogleButton } from '../../../components/auth/GoogleButton'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AuthContext } from '../../components/SessionProvider';
-import { auth } from '../../configs/firebaseConfig';
+import { AuthContext } from '../../../components/SessionProvider';
+import { auth } from '../../../configs/firebaseConfig';
 
 const schema = z.object({
     email: z.string().email(),
