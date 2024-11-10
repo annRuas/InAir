@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ScrollView, Dimensions, View } from 'react-native'
+import { Dimensions, Keyboard, View } from 'react-native'
 import { FirstPage } from '../../../components/auth/form/FirstPage'
 import { SecondPage } from '../../../components/auth/form/SecondPage'
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -10,6 +10,7 @@ import { useNavigation } from 'expo-router';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form';
+import { Directions, Gesture, GestureDetector, ScrollView } from 'react-native-gesture-handler';
 
 const { width } = Dimensions.get('screen');
 
@@ -51,6 +52,11 @@ type FormFields = z.infer<typeof schema>
 
 
 export default function Form() {
+    const flingLeft = Gesture.Fling().direction(Directions.LEFT);
+    const flingRight = Gesture.Fling().direction(Directions.RIGHT);
+    flingLeft.onStart(() => toNextPage());
+    flingRight.onStart(() => toLastPage());
+    const fling = Gesture.Exclusive(flingLeft, flingRight);
 
     const { control, handleSubmit, formState: { errors } } = useForm<FormFields>({
         resolver: zodResolver(schema)
@@ -69,11 +75,25 @@ export default function Form() {
         width: `${interpolate(progressWidth.value, [0, 5], [0, 100])}%`
     }))
 
-    const toNextPage = () => {
-        setPageIndex(pageIndex + 1)
-        scrollViewRef.current?.scrollTo({ x: width * (pageIndex + 1), animated: true })
-        progressWidth.value = withTiming(progressWidth.value + 1)
+    const toPage = (page: number) => {
+        Keyboard.dismiss();
+
+        if(page < 0 && pageIndex === 0) {
+            return;
+        }
+
+        if(page > 0 && pageIndex === 4) {
+            return;
+        }
+        setPageIndex(pageIndex + page)
+        scrollViewRef.current?.scrollTo({ x: width * (pageIndex + page), animated: true })
+        progressWidth.value = withTiming(progressWidth.value + page)
     }
+
+    const toNextPage = () => toPage(1);
+
+    const toLastPage = () => toPage(-1);
+
     const handlePageChange = (e: { nativeEvent: { contentOffset: any; }; }) => {
         const offset = e.nativeEvent.contentOffset;
         if (offset) {
@@ -89,13 +109,15 @@ export default function Form() {
             <View className='bg-gray-200 mt-20 mb-5 h-1 w-10/12'>
                 <Animated.View className='bg-gray-900 h-full' style={[progressStyle]} />
             </View>
-            <ScrollView onMomentumScrollEnd={handlePageChange} nestedScrollEnabled ref={scrollViewRef} showsHorizontalScrollIndicator={false} pagingEnabled horizontal>
+            <GestureDetector gesture={fling}>
+            <ScrollView scrollEnabled={false} onMomentumScrollEnd={handlePageChange} nestedScrollEnabled ref={scrollViewRef} showsHorizontalScrollIndicator={false} pagingEnabled horizontal>
                 <FirstPage changePage={toNextPage} />
                 <SecondPage changePage={toNextPage} />
                 <ThirdPage changePage={toNextPage} />
                 <FourthPage changePage={toNextPage} />
                 <FifthPage />
             </ScrollView>
+            </GestureDetector>
         </View>
     )
 }
