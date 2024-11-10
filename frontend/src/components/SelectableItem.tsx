@@ -15,7 +15,7 @@ export const SelectableItem: FC<SelectableItemProps> = ({large, onSubmit, handle
     const [isSelected, setIsSelected] = useState(false);
     return (
         <Pressable className={clsx(
-            "py-4 px-6 bg-zinc-100 border-2 rounded-3xl shadow-md shadow-black", 
+            "py-4 px-6 bg-zinc-100 border-2 rounded-3xl shadow-sm shadow-grey", 
             large ? 'w-full' : null, 
             isSelected ? 'border-black' : 'border-zinc-100',
             className

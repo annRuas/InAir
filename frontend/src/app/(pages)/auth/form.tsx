@@ -7,11 +7,54 @@ import { ThirdPage } from '../../../components/auth/form/ThirdPage';
 import { FourthPage } from '../../../components/auth/form/FourthPage';
 import { FifthPage } from '../../../components/auth/form/FifthPage';
 import { useNavigation } from 'expo-router';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form';
 
 const { width } = Dimensions.get('screen');
 
+const schema = z.object({
+    dateOfBirth: z.string().datetime(),
+    isMale: z.boolean(),
+    isFemale: z.boolean(),
+    height: z.number(),
+    weight: z.number(),
+    q_experiences_1: z.boolean(),
+    q_experiences_2: z.boolean(),
+    q_experiences_3: z.boolean(),
+    q_experiences_4: z.boolean(),
+    q_experiences_5: z.boolean(),
+    hasAsbestosis: z.boolean(),
+    hasAsthma: z.boolean(),
+    hasChronicBronchitis: z.boolean(),
+    hasEmphysema: z.boolean(),
+    hasPneumonia: z.boolean(),
+    hasTuberculosis: z.boolean(),
+    hasSilicosis: z.boolean(),
+    hasPneumothorax: z.boolean(),
+    hasLungCancer: z.boolean(),
+    hasBrokenRibs: z.boolean(),
+    hasChestInjuriesOrSurgeries: z.boolean(),
+    hasUnknownLungProblem: z.boolean(),
+    q_symptoms_1: z.boolean(),
+    q_symptoms_2: z.boolean(),
+    q_symptoms_3: z.boolean(),
+    q_symptoms_4: z.boolean(),
+    q_symptoms_5: z.boolean(),
+    q_symptoms_6: z.boolean(),
+    q_symptoms_7: z.boolean(),
+    q_symptoms_8: z.boolean(),
+    q_symptoms_9: z.boolean()
+})
+
+type FormFields = z.infer<typeof schema>
+
+
 export default function Form() {
 
+    const { control, handleSubmit, formState: { errors } } = useForm<FormFields>({
+        resolver: zodResolver(schema)
+    });
     const navigation = useNavigation();
 
     useEffect(() => {
