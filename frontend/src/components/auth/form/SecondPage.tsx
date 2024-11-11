@@ -1,27 +1,27 @@
-import { Dimensions, Pressable, Text, TouchableOpacity, View } from "react-native"
+import { Dimensions, Pressable, View } from "react-native"
 import { TextParagraph } from "../../TextParagraph"
 import { Button } from "../../Button"
 import { RadioButton } from "../../RadioButton";
 import { FC, useState } from "react";
 import { TextInputImage } from "../../TextInputImage";
-import { useForm } from "react-hook-form";
-import { DropDown, DropDownContent, DropDownItem, DropDownItemSeparator, DropDownLabel, DropDownTrigger } from "../../DropDown";
+import { Control } from "react-hook-form";
+import { FormFields } from "../../../app/(pages)/auth/form";
+import { DropDown, DropDownContent, DropDownItem, DropDownTrigger } from "../../DropDown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 const { width } = Dimensions.get('screen');
 
 type SecondPageProps = {
     changePage?: Function;
+    control: Control<FormFields, any>;
 }
 
 const monthsAbbreviations = ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul', 'Aug', 'Sep',
     'Oct', 'Nov', 'Dec'
 ]
 
-export const SecondPage: FC<SecondPageProps> = ({ changePage, ...props }) => {
-    const { control, handleSubmit, formState: { errors } } = useForm({
-    });
-
+export const SecondPage: FC<SecondPageProps> = ({ changePage, control,...props }) => {
     const [monthSelected, setMonthSelected] = useState('Jan');
+
     return (
         <View className="gap-y-10 flex-1 justify-center" style={{ width: width }} {...props}>
             <View className="mx-10 gap-y-3">
@@ -53,16 +53,16 @@ export const SecondPage: FC<SecondPageProps> = ({ changePage, ...props }) => {
                     <TextInputImage control={control} maxLength={4} numeric placeholder="Year" className="basis-1/3" name="year"></TextInputImage>
                 </View>
                 <TextParagraph notCentered>What's your biological sex?</TextParagraph>
-                <RadioButton firstLabel="Male" secondLabel="Female" />
+                <RadioButton control={control} name="isFemale" firstLabel="Male" secondLabel="Female" />
                 <View className="flex-row justify-between">
                     <View className="gap-y-1 justify-self-start">
                         <TextParagraph notCentered>Height</TextParagraph>
-                        <TextInputImage small name="Teste2" control={control}></TextInputImage>
+                        <TextInputImage small name="height" control={control}></TextInputImage>
                     </View>
                     <View />
                     <View className="gap-y-1">
                         <TextParagraph notCentered>Weight</TextParagraph>
-                        <TextInputImage small name="Teste2" control={control}></TextInputImage>
+                        <TextInputImage small name="weight" control={control}></TextInputImage>
                     </View>
                 </View>
             </View>

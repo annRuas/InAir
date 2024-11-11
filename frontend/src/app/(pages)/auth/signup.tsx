@@ -98,7 +98,6 @@ export default function Signup() {
                     <TextHighlighted> Sign in </TextHighlighted>
                 </Link>
             </TextParagraph>
-
             <SeparatorText>or</SeparatorText>
             <GoogleButton />
         </View>
