@@ -25,20 +25,21 @@ export const TextInputImage: FC<TextInputImageProps> = ({ placeholder, name, pas
     })
 
     return (
-        <View
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             className={clsx('border border-zinc-400 rounded-2xl justify-center self-start items-center flex-row', wrong && 'border-red-600', className)}
             {...props}
         >
             <View className='pl-3'>
                 {children}
             </View>
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} className={clsx(!small && 'flex-1')}>
+            <View className={clsx(!small && 'flex-1')}>
                 <TextInput secureTextEntry={password} value={field.value} onChangeText={field.onChange} selectionColor={'black'} 
                            className={clsx('py-3 pl-2 text-black', small ? 'w-32': 'w-80')}
                            maxLength={maxLength}
                         keyboardType={numeric ? 'numeric' : undefined} 
                     style={{ fontSize: 20, lineHeight: 24 }} placeholder={placeholder} placeholderTextColor={'rgb(100 116 139)'} />
-            </KeyboardAvoidingView>
-        </View>
+            </View>
+        </KeyboardAvoidingView>
     )
 }
