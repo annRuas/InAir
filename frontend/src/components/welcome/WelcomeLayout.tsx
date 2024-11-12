@@ -10,7 +10,7 @@ type WelcomeLayoutProps = {
 export const WelcomeLayout: React.FC<WelcomeLayoutProps> = ({ children, marginBottomSmall }) => {
   return (
 		<ImageBackground className='flex-1' source={require('../../icons/InAir_logobg.png')}>
-        <TitleText centered className={clsx('mt-36', marginBottomSmall ? 'mb-5' : 'mb-10')}> Hello </TitleText>
+        <TitleText centered className={clsx(marginBottomSmall ? 'mb-5' : 'mb-10')}> Hello </TitleText>
         {children}
     </ImageBackground>
   );

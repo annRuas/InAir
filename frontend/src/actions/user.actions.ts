@@ -1,3 +1,4 @@
+import { UserPreferences } from "../app/(pages)/auth/form";
 import { axiosInstance } from "../utils/axiosInstance";
 
 export async function createData(email: string, name: string, uid: string) {
@@ -9,6 +10,16 @@ export async function createData(email: string, name: string, uid: string) {
             uid
         }
     });
+
+    return response.data;
+}
+
+export async function createPreferences(userPreferences: UserPreferences, uid: string) {
+    const response = await axiosInstance.post('/users/create-preferences', userPreferences, {
+        headers: {
+            uid
+        }
+    })
 
     return response.data;
 }
