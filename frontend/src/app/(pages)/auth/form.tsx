@@ -1,24 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Dimensions, Keyboard, KeyboardAvoidingView, Platform, View } from 'react-native'
 import { FirstPage } from '../../../components/auth/form/FirstPage'
-import { SecondPage } from '../../../components/auth/form/SecondPage'
+import { monthsAbbreviations, SecondPage } from '../../../components/auth/form/SecondPage'
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { ThirdPage } from '../../../components/auth/form/ThirdPage';
 import { FourthPage } from '../../../components/auth/form/FourthPage';
 import { FifthPage } from '../../../components/auth/form/FifthPage';
-import { useNavigation } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Directions, Gesture, GestureDetector, ScrollView } from 'react-native-gesture-handler';
+import { isValidDate } from '../../../utils/isValidDate';
+import { createPreferences } from '../../../actions/user.actions';
+import { AuthContext } from '../../../components/SessionProvider';
 
 const { width } = Dimensions.get('screen');
 
 const schema = z.object({
-    dateOfBirth: z.string().datetime(),
+    month: z.string(),
+    day: z.number(),
+    year: z.number(),
     isFemale: z.boolean(),
-    height: z.number(),
-    weight: z.number(),
+    height: z.string().refine(v => { let n = Number(v); return !isNaN(n) && v?.length > 0}, {message: "Invalid number"}),
+    weight: z.string().refine(v => { let n = Number(v); return !isNaN(n) && v?.length > 0}, {message: "Invalid number"}),
     q_experiences_1: z.boolean(),
     q_experiences_2: z.boolean(),
     q_experiences_3: z.boolean(),
@@ -47,8 +52,9 @@ const schema = z.object({
     q_symptoms_9: z.boolean()
 })
 
-export type FormFields = z.infer<typeof schema>
+export type FormFields = z.infer<typeof schema>;
 
+export type UserPreferences = Omit<FormFields, "month" | "day" | "year" | "height" | "weight"> & {dateOfBirth: string, height: number, weight: number};
 
 export default function Form() {
     const flingLeft = Gesture.Fling().direction(Directions.LEFT);
@@ -57,7 +63,11 @@ export default function Form() {
     flingRight.onStart(() => toLastPage());
     const fling = Gesture.Exclusive(flingLeft, flingRight);
 
-    const { control, handleSubmit, formState: { errors } } = useForm<FormFields>();
+	const authContext = useContext(AuthContext);
+
+    const { control, handleSubmit, formState: { errors } } = useForm<FormFields>({
+        resolver: zodResolver(schema)
+    });
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -93,8 +103,29 @@ export default function Form() {
     const toLastPage = () => toPage(-1);
 
     const onSubmit: SubmitHandler<FormFields> = async (formFields) => {
+        if(authContext.session === null) {
+			return router.replace('/welcome');
+		}
+        const { year, month, day, height, weight, ...restOfFields } = formFields;
+
+        const realMonth = monthsAbbreviations.indexOf(month);
+        const dateOfBirth = new Date(year, realMonth, day);
+        console.log(dateOfBirth.toISOString());
+        if(!isValidDate(realMonth, dateOfBirth)) {
+            console.log("invalid date ");
+            /** @todo add dialog */
+            return;
+        }
+        
         try {
-            console.log(formFields);
+            console.log('creating user preferences');
+            await createPreferences({
+                ...restOfFields, 
+                dateOfBirth: dateOfBirth.toISOString(),
+                weight: Number(weight),
+                height: Number(height)
+            }, authContext.session);
+            router.replace('/');
         } catch (error) {
             console.log(error);
         }
@@ -109,10 +140,10 @@ export default function Form() {
             <GestureDetector gesture={fling}>
                     <ScrollView scrollEnabled={false} nestedScrollEnabled ref={scrollViewRef} showsHorizontalScrollIndicator={false} pagingEnabled horizontal>
                         <FirstPage changePage={toNextPage} />
-                        <SecondPage control={control} changePage={toNextPage} />
-                        <ThirdPage control={control} changePage={toNextPage} />
+                        <SecondPage errors={errors} control={control} changePage={toNextPage} />
+                        <ThirdPage errors={errors} control={control} changePage={toNextPage} />
                         <FourthPage control={control} changePage={toNextPage} />
-                        <FifthPage handleSubmit={handleSubmit} onSubmit={onSubmit} control={control} />
+                        <FifthPage errors={errors} handleSubmit={handleSubmit} onSubmit={onSubmit} control={control} />
                     </ScrollView>
             </GestureDetector>
         </KeyboardAvoidingView>

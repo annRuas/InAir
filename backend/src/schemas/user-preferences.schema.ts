@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const userPreferencesSchema = z.object({
     dateOfBirth: z.string().datetime(),
-    isMale: z.boolean(),
     isFemale: z.boolean(),
     height: z.number(),
     weight: z.number(),
