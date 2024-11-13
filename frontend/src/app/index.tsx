@@ -1,13 +1,14 @@
 import { router, useRootNavigationState } from 'expo-router';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../components/SessionProvider';
-import { getUserInformation } from '../actions/user.actions';
+import { getUserInformation, getUserLocations } from '../actions/user.actions';
 import { auth } from '../configs/firebaseConfig';
 
 export default function Index() {
 	const rootNavigationState = useRootNavigationState()
 	const navigatorReady = rootNavigationState?.key != null
 	const authContext = useContext(AuthContext);
+
 	useEffect(() => {
 		const loadInformation = async (uid: string) => {
 			const { data, status } = await getUserInformation(uid);
@@ -17,8 +18,10 @@ export default function Index() {
 			}
 
 			authContext.userInformation = data;
+			const { locations } = await getUserLocations(uid);
+			authContext.locations = locations;
 
-			return router.replace('/Home');
+			return router.replace('/home');
 		}
 
 		if(!navigatorReady) return;
@@ -31,7 +34,6 @@ export default function Index() {
 			loadInformation(authContext.session);
 			return;
 		}
-
 
 	}, [navigatorReady])
     

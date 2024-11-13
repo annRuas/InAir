@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Dimensions, FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Octicons from '@expo/vector-icons/Octicons';
@@ -11,6 +11,8 @@ import { getAqiLevel, getAqiLevelCustom } from '../../actions/getAqiLevel';
 import { getAqiInfo } from '../../utils/getAqiInfo';
 import axios from 'axios';
 import Constants from 'expo-constants';
+import { AirCustomMessage, AirInfo, AirInfoHeader, AirInfoMessage } from '../../components/AirInfo';
+import { AuthContext, Location } from '../../components/SessionProvider';
 
 const DateDisplay = () => {
 	const currentDate = new Date();
@@ -20,6 +22,9 @@ const DateDisplay = () => {
 
 const { width } = Dimensions.get('screen'); 
 export default function Home() {
+	const authContext = useContext(AuthContext);
+
+	
 	const params: any = useLocalSearchParams();
 	let { isLoggedIn, uid } = params;
 	isLoggedIn = Boolean(Number(isLoggedIn))
@@ -138,8 +143,11 @@ export default function Home() {
 			<Text style={styles.date}>
 				Today is {DateDisplay()}
 			</Text>
-
-			<Slider/>
+			<AirInfo uid={authContext.session} location={authContext?.locations?.[0] as Location}>
+				<AirInfoHeader/>
+				<AirInfoMessage/>
+				{authContext.session !== null ? (<AirCustomMessage/>) : null}
+			</AirInfo>
 
 			<View>
 				<View style={{

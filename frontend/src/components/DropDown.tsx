@@ -8,6 +8,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 import { cn } from '../utils/cn';
 import { ScrollView } from 'react-native-gesture-handler';
+import { any, boolean } from 'zod';
 
 interface DropDownContextType {
   open: boolean;
@@ -30,7 +31,7 @@ const DropDown = ({ children }: { children: React.ReactNode }) => {
 const DropDownTrigger = ({ children }: any) => {
   const { setOpen } = useDropdown();
   return cloneElement(children, {
-    onPress: () => setOpen((prev: any) => !prev),
+    onPress: () => setOpen(((prev: boolean) => (!prev)) as unknown as boolean),
   });
 };
 

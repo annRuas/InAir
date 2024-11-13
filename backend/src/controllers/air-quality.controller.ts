@@ -22,7 +22,7 @@ async function airQualityCustom(req: Request, res: Response) {
 
     const globalIndex = await userService.getCustomAirQuality(airQuality, latitude, longitude);
 
-    return res.status(200).send({globalIndex: globalIndex});
+    return res.status(200).send(globalIndex);
 }
 
 

@@ -1,4 +1,4 @@
-export interface UserInformation {
+export type UserInformation = {
     residence: string,
     name: string,
     email: string,

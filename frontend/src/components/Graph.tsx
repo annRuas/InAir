@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, FC } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-import { getAqiInfo } from '../utils/getAqiInfo';
 import { calculateCircleCursorPosition } from '../utils/calculateCircleCursorPosition';
-import { getAqiLevel, getAqiLevelCustom } from '../actions/getAqiLevel';
-import { useLocalSearchParams } from 'expo-router';
-import { GraphProps } from '../types/GraphProps';
 
-export function Graph(props: GraphProps) {
-    const { globalIndex, aqiColor } = props;
+export function Graph(props: any) {
+	const { globalIndex, aqiColor } = props;
+
 	const { sin, cos, rotate } = calculateCircleCursorPosition(globalIndex)
 
 	return (

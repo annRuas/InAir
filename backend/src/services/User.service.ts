@@ -1,5 +1,6 @@
 import { Database } from "../configs/Database";
 import { UserInformation } from "../interfaces/user-information.interface";
+import { UserLocations } from "../interfaces/user-locations.interface";
 import { UserData } from "../schemas/user-data.schema";
 import { UserPreferences } from "../schemas/user-preferences.schema";
 import { ApiError } from "../utils/ApiError";
@@ -9,6 +10,7 @@ export class UserService {
     
     usersDataCollection = 'users-data';
     usersPreferencesCollection = 'users-preferences';
+    usersLocationsCollection = 'users-locations';
     database: Database;
     uid: string;
 
@@ -21,6 +23,10 @@ export class UserService {
         await this.database.createDoc(this.usersDataCollection, this.uid, {
             name,
             email
+        });
+
+        await this.database.createDoc(this.usersLocationsCollection, this.uid, {
+            locations: []
         });
     }
 
@@ -60,6 +66,15 @@ export class UserService {
         }
     }
 
+    async getUserLocations(): Promise<UserLocations> {
+        const userLocations = await this.database.getDoc(this.usersLocationsCollection, this.uid) as UserLocations | undefined;
+        if(!userLocations) {
+            throw ApiError.notFound('User locations');
+        }
+
+        return userLocations;
+    }
+
     parseDiseases(userPreferences: UserPreferences) {
         const possibleDiseases = ['Asbestosis', 'Asthma', 'ChronicBronchitis', 
                                   'Emphysema', 'LungCancer', 'Pneumonia', 'Pneumothorax', 
@@ -71,6 +86,9 @@ export class UserService {
     async getCustomAirQuality(airQuality: AirQuality, latitude: string, longitude: string) {
         const globalIndex = await airQuality.getAirQuality(latitude, longitude);
 
-        return globalIndex;
+        return { 
+            globalIndex,
+            customMessage: 'Crazy custom message' 
+        }
     }
 }

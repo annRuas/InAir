@@ -22,7 +22,7 @@ export default function Welcome2() {
 					<Button large>Create Account</Button>
 				</Link>
 				<Link href={{
-					pathname: "/Home",
+					pathname: "/home",
 					params: { isLoggedIn: 0, uid: 'na' },
 				}} asChild>
 					<Button large white>Proceed without account</Button>
