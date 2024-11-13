@@ -70,10 +70,22 @@ export async function getUserInformation(req: Request, res: Response, next: Next
         const uid = req.headers.uid as string;
 
         const userService = new UserService(new Database(), uid);
-
         const userInformation = await userService.getUserInformation();
 
         res.status(200).send(userInformation);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export async function getUserLocations(req: Request, res: Response, next: NextFunction) {
+    try {
+        const uid = req.headers.uid as string;
+
+        const userService = new UserService(new Database(), uid);
+        const userLocations = await userService.getUserLocations();
+
+        res.status(200).send(userLocations);
     } catch (error) {
         next(error);
     }

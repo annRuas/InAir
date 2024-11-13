@@ -1,0 +1,79 @@
+function getAqiInfo(aqiLevel: number) {
+    if (isNaN(aqiLevel)) {
+    	return {
+			color: 'black',
+			classification: 'Undefined',
+			classificationMessage: '',
+            message: 'Unable to determine air quality information.'
+		}; 
+    }
+
+    if (aqiLevel >= 0 && aqiLevel <= 49) {
+		return {
+			color: 'green-800',
+			classification: 'Good',
+			classificationMessage: '',
+            message: 'Good air quality does not require any advisory whatsoever. Remember to stay hydrated.'
+	  	} 
+    } 
+	if (aqiLevel >= 50 && aqiLevel <= 99) {
+    	return {
+			color: 'yellow-600',
+			classification: 'Moderate',
+			classificationMessage: '',
+            message: `Moderate air quality. It's generally acceptable, but there may be some pollutants.`
+		} 	  
+    } 
+	if (aqiLevel >= 100 && aqiLevel <= 149) {
+		return {
+			color: 'orange-600',
+			classification: 'Unhealthy',
+			classificationMessage: 'for Sensitive Groups',
+            message: 'Unhealthy for Sensitive Groups. People with respiratory or heart conditions, children, and older adults may be more affected.'
+		}
+    }
+	
+	if (aqiLevel >= 150 && aqiLevel <= 199) {
+		return {
+			color: 'red-600',
+			classification: 'Unhealthy',
+			classificationMessage: '',
+            message: 'Unhealthy air quality. Everyone may begin to experience health effects; members of sensitive groups may experience more serious health effects.'
+		}
+    } 
+	if (aqiLevel >= 200 && aqiLevel <= 299) {
+		return {
+			color: 'purple-600',
+			classification: 'Very Unhealthy',
+			classificationMessage: '',
+            message: 'Very Unhealthy air quality. Health alert: everyone may experience more serious health effects.'
+		}
+    } 
+	if (aqiLevel >= 300) {
+		return {
+			color: 'red-950',
+			classification: 'Hazardous',
+			classificationMessage: '',
+            message: 'Hazardous air quality. Health warnings of emergency conditions; the entire population is more likely to be affected.'
+		}
+    } 
+
+    return {
+		color: '#000000',
+		classification: 'Unknown',
+		classificationMessage: '',
+        message: 'Unable to determine air quality information.'
+	} 
+}
+
+export function aqiColor(aqi: number) {
+    return getAqiInfo(aqi).color;
+}
+
+export function aqiClassification(aqi: number) {
+    return getAqiInfo(aqi).classification;
+}
+
+export function aqiMessage(aqi: number) {
+    return getAqiInfo(aqi).message;
+}

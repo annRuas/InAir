@@ -1,6 +1,6 @@
 // q = questionare
 
-export interface UserPreferencesWeights {
+export type UserPreferencesWeights = {
     q_experiences_1: number;
     q_experiences_2: number;
     q_experiences_3: number;

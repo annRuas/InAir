@@ -9,14 +9,16 @@ const userRouter: Router = express.Router();
 
 userRouter.use(validateRequestHeader(userHeaderSchema));
 
-userRouter.post('/create-data', validateRequestBody(userDataSchema), userController.createUsersData);
+userRouter.post('/data', validateRequestBody(userDataSchema), userController.createUsersData);
 
-userRouter.post('/create-preferences', validateRequestBody(userPreferencesSchema), userController.createUserPreferences);
+userRouter.post('/preferences', validateRequestBody(userPreferencesSchema), userController.createUserPreferences);
 
-userRouter.get('/get-information', userController.getUserInformation);
+userRouter.get('/information', userController.getUserInformation);
 
-userRouter.get('/get-data', userController.getUserData);
+userRouter.get('/data', userController.getUserData);
 
-userRouter.post('/add-location', userController.addLocation);
+userRouter.get('/locations', userController.getUserLocations);
+
+userRouter.post('/location', userController.addLocation);
 
 export { userRouter }
