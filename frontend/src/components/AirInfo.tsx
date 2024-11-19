@@ -49,7 +49,7 @@ export const AirInfoHeader = () => {
             <Skeleton/>
         )
     }
-
+    console.log(`text-${aqiColor(data.globalIndex)}`);
 	return (
 		<View>
 			<Text>
@@ -57,7 +57,7 @@ export const AirInfoHeader = () => {
 			</Text>
 			<Text>
 				The Air Quality is: 
-                <Text className={clsx(`text-${aqiColor(data.globalIndex)}`)}> 
+                <Text className={clsx(`text-[${aqiColor(data.globalIndex)}]`)}> 
                     {aqiClassification(data.globalIndex)} 
                 </Text>
 			</Text>
@@ -96,7 +96,7 @@ export const AirInfoMessage = () => {
     }
 
 	return (
-		<View className={`bg-${aqiColor(data.globalIndex)}`}>
+		<View className={`bg-[${aqiColor(data.globalIndex)}]`}>
 			<Text>
                 {aqiMessage(data.globalIndex)}
 			</Text>
@@ -144,7 +144,7 @@ export const AirInfoGraph: FC<AirInfoGraphProps> = ({width}) => {
                 <View className={clsx("absolute self-center z-0 bottom-0 rounded-t-full", `bg-red-500`)} style={{width: (width/2.381), marginBottom: (width/26.2), height: (width/4.366)}}/>
 			</View>
 			<View style={{flexDirection: 'row', marginTop: 30, alignContent: 'center', alignItems: 'center', justifyContent: 'center'}}>
-				<View style={{
+				<View className="bg-[#40A43F]" style={{
 					width: 30, 
 					height: 30, 
 					borderRadius: 5, 
