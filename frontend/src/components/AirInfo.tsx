@@ -122,7 +122,7 @@ export const AirInfoGraph: FC<AirInfoGraphProps> = ({width}) => {
             return;
         }
 
-        const { sin, cos, rotate } = calculateCircleCursorPosition(300, width, heigth);
+        const { sin, cos, rotate } = calculateCircleCursorPosition(data.globalIndex, width, heigth);
 
         setSin(sin);
         setCos(cos);
