@@ -142,7 +142,7 @@ export default function Home() {
 			</Text>
 			<AirInfo uid={authContext.session} location={authContext?.locations?.[0] as Location}>
 				<AirInfoHeader/>
-				<AirInfoGraph/>
+				<AirInfoGraph width={300}/>
 				<AirInfoMessage/>
 				{authContext.session !== null ? (<AirCustomMessage/>) : null}
 			</AirInfo>

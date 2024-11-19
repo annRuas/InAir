@@ -104,25 +104,29 @@ export const AirInfoMessage = () => {
 	)
 }
 
-export const AirInfoGraph = () => {
+type AirInfoGraphProps = {
+    width: number;
+}
+export const AirInfoGraph: FC<AirInfoGraphProps> = ({width}) => {
     const { useAirFetch } = useAirInfo();
     const { data, isLoading } = useAirFetch();
     const [sin, setSin] = useState(0);
     const [cos, setCos] = useState(0);
     const [rotate, setRotate] = useState('');
+    const heigth = (width/1.832);
+    const cursorWidth = (width/16.375);
+    const cursorHeigth = (cursorWidth/1.849);
 
     useMemo(() => {
         if(data?.globalIndex === undefined) {
             return;
         }
 
-        const { sin, cos, rotate } = calculateCircleCursorPosition(250);
+        const { sin, cos, rotate } = calculateCircleCursorPosition(300, width, heigth);
 
-		console.log(sin, cos, rotate);
         setSin(sin);
         setCos(cos);
         setRotate(rotate);
-		console.log(200 + cos);
     }, [data?.globalIndex]);
 
     if(isLoading || data?.globalIndex === undefined) {
@@ -135,9 +139,9 @@ export const AirInfoGraph = () => {
         <View className="self-start">
 			<View className="relative bg-red-900">
 
-				<GraphIcon width={262} height={145.49} className="z-10"/>
-				<CursorIcon width={20} height={10.82} className="absolute z-50" style={{top: 128 - sin, left: 124 + cos, transform: [{rotate: rotate}]}}/>
-                <View className={clsx("absolute self-center mb-2 z-0 py-10 bottom-0 px-14 rounded-t-full", `bg-red-500`)}/>
+				<GraphIcon width={width} height={heigth} className="z-10"/>
+				<CursorIcon width={cursorWidth} height={cursorHeigth} className="absolute z-50" style={{top: (heigth/1.135) - sin, left: (width/2.147)+ cos, transform: [{rotate: rotate}]}}/>
+                <View className={clsx("absolute self-center z-0 bottom-0 rounded-t-full", `bg-red-500`)} style={{width: (width/2.381), marginBottom: (width/26.2), height: (width/4.366)}}/>
 			</View>
 			<View style={{flexDirection: 'row', marginTop: 30, alignContent: 'center', alignItems: 'center', justifyContent: 'center'}}>
 				<View style={{
