@@ -11,7 +11,7 @@ import { getAqiLevel, getAqiLevelCustom } from '../../actions/getAqiLevel';
 import { getAqiInfo } from '../../utils/getAqiInfo';
 import axios from 'axios';
 import Constants from 'expo-constants';
-import { AirCustomMessage, AirInfo, AirInfoHeader, AirInfoMessage } from '../../components/AirInfo';
+import { AirCustomMessage, AirInfo, AirInfoGraph, AirInfoHeader, AirInfoMessage } from '../../components/AirInfo';
 import { AuthContext, Location } from '../../components/SessionProvider';
 
 const DateDisplay = () => {
@@ -41,7 +41,6 @@ export default function Home() {
 	}])
 
 	useEffect(() => {
-		console.log(isFocused);
 			const fetchAqiData = async () => {
 			try {
 				if (isLoggedIn) {
@@ -71,7 +70,6 @@ export default function Home() {
 	}
 
 	const Slider = () => {
-		console.log(aqiInfos)
 		return (
 			<View>
 				<FlatList showsHorizontalScrollIndicator={false} pagingEnabled horizontal data={aqiInfos} renderItem={({item, index}) => <GraphModel locationName={item.locationName} latitude={item.latitude} longitude={item.longitude} index={index}></GraphModel>}/>
@@ -95,7 +93,6 @@ export default function Home() {
 						setGlobalIndex(aqiInfo.globalIndex);
 						setCustomMessage(aqiInfo.message);
 					} else {
-						console.log('here on not')
 						setGlobalIndex(await getAqiLevel(latitude, longitude));
 					}
 	
@@ -145,6 +142,7 @@ export default function Home() {
 			</Text>
 			<AirInfo uid={authContext.session} location={authContext?.locations?.[0] as Location}>
 				<AirInfoHeader/>
+				<AirInfoGraph/>
 				<AirInfoMessage/>
 				{authContext.session !== null ? (<AirCustomMessage/>) : null}
 			</AirInfo>

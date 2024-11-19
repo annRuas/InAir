@@ -39,5 +39,6 @@ async function getAirQualityCustom({latitude, longitude}: Coordinates, uid: stri
 
 }
 export async function getAirQuality(coordinates: Coordinates, uid: string | null): Promise<ResponseAirQuality> {
-   return uid === null ? await getAirQualityGeneric(coordinates) as ResponseAirQuality :  await getAirQualityCustom(coordinates, uid) as ResponseAirQuality; 
+   //return uid === null ? await getAirQualityGeneric(coordinates) as ResponseAirQuality :  await getAirQualityCustom(coordinates, uid) as ResponseAirQuality; 
+   return { globalIndex: 20, globalMessage: 'test' } as unknown  as ResponseAirQuality; 
 }
