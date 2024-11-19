@@ -6,12 +6,12 @@ export function calculateCircleCursorPosition(globalIndex: number) {
 
     const radians = globalIndexDegrees * (Math.PI / 180);
 
-    const rotateDegree = 160 - globalIndexDegrees;
+    const rotateDegree = 180 - globalIndexDegrees;
     const rotateBaseline = (rotateDegree) > 360 ? rotateDegree - 360 : rotateDegree
 
     return {
         cos: (Math.cos(radians) * 70),
-        sin: (Math.sin(radians) * 70),
+        sin: (Math.sin(radians) * 75),
         rotate: rotateBaseline + 'deg'
     }
 }
