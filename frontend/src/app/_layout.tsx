@@ -2,6 +2,7 @@ import { Slot, Stack } from 'expo-router';
 import { SessionProvider } from '../components/SessionProvider';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import "../../global.css";
 
 const queryClient = new QueryClient();
 
