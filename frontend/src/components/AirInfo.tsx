@@ -19,13 +19,14 @@ type AirInfoProps = {
 	location: Location;
 	uid: string | null;
 	children?: React.ReactNode;
+	className?: string;
 }
 
 const AirInfoContext = createContext<AirInfoContext | undefined>(
   undefined
 );
 
-export const AirInfo: FC<AirInfoProps> = ({uid, location, children}) => {
+export const AirInfo: FC<AirInfoProps> = ({uid, location, children, className, ...props}) => {
 	const { coordinates } = location;
     const useAirFetch = () => {
         return useQuery({
@@ -36,12 +37,12 @@ export const AirInfo: FC<AirInfoProps> = ({uid, location, children}) => {
 
 	return (
 		<AirInfoContext.Provider value={{useAirFetch, location}}>
-			<View className="relative">{children}</View>
+			<View className={clsx("relative", className)} {...props}>{children}</View>
 		</AirInfoContext.Provider>
 	);
 };
 
-export const AirInfoHeader = () => {
+export const AirInfoHeader = (props: any) => {
 	const { useAirFetch, location } = useAirInfo()
     const { data, isLoading } = useAirFetch();
     if(isLoading || data?.globalIndex === undefined) {
@@ -51,15 +52,14 @@ export const AirInfoHeader = () => {
     }
 
 	return (
-		<View>
-			<Text>
-                {`Air quality in ${location.name}`}
+		<View {...props}>
+			<Text className="text-lg">
+                Air quality in<Text className="font-bold"> {location.name}</Text>
 			</Text>
-			<Text>
-				The Air Quality is: 
-                <Text style={{color: aqiColor(data.globalIndex)}}> 
-
-                    {aqiClassification(data.globalIndex)} 
+			<Text className="text-xl">
+				The Air Quality is:
+                <Text className="font-bold" style={{color: aqiColor(data.globalIndex)}}> 
+                    {` ${aqiClassification(data.globalIndex)}`} 
                 </Text>
 			</Text>
 		</View>
@@ -67,7 +67,7 @@ export const AirInfoHeader = () => {
 }
 
 
-export const AirCustomMessage = () => {
+export const AirCustomMessage = (props: any) => {
     const { useAirFetch } = useAirInfo()
     const { data, isLoading } = useAirFetch();
 
@@ -78,7 +78,7 @@ export const AirCustomMessage = () => {
     }
 
 	return (
-		<View>
+		<View {...props}>
 			<Text>
                 {data.customMessage}
 			</Text>
@@ -86,7 +86,7 @@ export const AirCustomMessage = () => {
 	)
 }
 
-export const AirInfoMessage = () => {
+export const AirInfoMessage = (props: any) => {
 	const { useAirFetch } = useAirInfo();
     const { data, isLoading } = useAirFetch();
 
@@ -97,8 +97,8 @@ export const AirInfoMessage = () => {
     }
 
 	return (
-		<View style={{backgroundColor: aqiColor(data.globalIndex)}}>
-			<Text>
+		<View {...props} className="rounded-3xl px-4 w-full" style={{backgroundColor: aqiColor(data.globalIndex)}}>
+			<Text className="p-3 text-center font-semibold">
                 {aqiMessage(data.globalIndex)}
 			</Text>
 		</View>
@@ -108,7 +108,8 @@ export const AirInfoMessage = () => {
 type AirInfoGraphProps = {
     width: number;
 }
-export const AirInfoGraph: FC<AirInfoGraphProps> = ({width}) => {
+
+export const AirInfoGraph: FC<AirInfoGraphProps> = ({width, ...props}) => {
     const { useAirFetch } = useAirInfo();
     const { data, isLoading } = useAirFetch();
     const [sin, setSin] = useState(0);
@@ -137,19 +138,16 @@ export const AirInfoGraph: FC<AirInfoGraphProps> = ({width}) => {
     }
 	
     return (
-        <View className="self-start">
+        <View {...props}>
 			<View className="relative">
 
 				<GraphIcon width={width} height={heigth} className="z-10"/>
 				<CursorIcon width={cursorWidth} height={cursorHeigth} className="absolute z-50" style={{top: (heigth/1.135) - sin, left: (width/2.147)+ cos, transform: [{rotate: rotate}]}}/>
                 <View className="absolute self-center z-0 bottom-0 rounded-t-full" style={{width: (width/2.381), marginBottom: (width/26.2), height: (width/4.366), backgroundColor: aqiColor(data.globalIndex)}}/>
 			</View>
-			<View style={{flexDirection: 'row', marginTop: 30, alignContent: 'center', alignItems: 'center', justifyContent: 'center'}}>
-				<View style={{
+			<View className="flex-row mt-4 align-middle items-center justify-center">
+				<View className="h-8 w-8 rounded-md" style={{
                     backgroundColor: aqiColor(data.globalIndex),
-					width: 30, 
-					height: 30, 
-					borderRadius: 5, 
 					shadowColor: "#000",
 					shadowOffset: {
 						width: 0,
@@ -157,10 +155,9 @@ export const AirInfoGraph: FC<AirInfoGraphProps> = ({width}) => {
 					},
 					shadowOpacity: 0.25,
 					shadowRadius: 3.84,
-					
 					elevation: 5,
 					}}/>
-				<Text style={{fontSize: 20, fontWeight: 'regular'}}> {Math.round(data.globalIndex)} AQI </Text>
+				<Text className="text-xl"> {Math.round(data.globalIndex)} AQI </Text>
 			</View>
 		</View>
     )
