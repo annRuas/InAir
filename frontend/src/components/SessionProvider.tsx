@@ -3,7 +3,7 @@ import { createContext, type PropsWithChildren, useState } from 'react';
 type UserInformation = {
 	email: string;
 	name: string;
-	dateOfBirth: Date;
+	dateOfBirth: string;
 	residence: string;
 	diseases: string[];
 }
