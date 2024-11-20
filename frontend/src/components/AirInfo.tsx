@@ -57,7 +57,8 @@ export const AirInfoHeader = () => {
 			</Text>
 			<Text>
 				The Air Quality is: 
-                <Text className={clsx(`text-${aqiColor(data.globalIndex)}`)}> 
+                <Text style={{color: aqiColor(data.globalIndex)}}> 
+
                     {aqiClassification(data.globalIndex)} 
                 </Text>
 			</Text>
@@ -96,7 +97,7 @@ export const AirInfoMessage = () => {
     }
 
 	return (
-		<View className={`bg-${aqiColor(data.globalIndex)}`}>
+		<View style={{backgroundColor: aqiColor(data.globalIndex)}}>
 			<Text>
                 {aqiMessage(data.globalIndex)}
 			</Text>
@@ -137,14 +138,15 @@ export const AirInfoGraph: FC<AirInfoGraphProps> = ({width}) => {
 	
     return (
         <View className="self-start">
-			<View className="relative bg-red-900">
+			<View className="relative">
 
 				<GraphIcon width={width} height={heigth} className="z-10"/>
 				<CursorIcon width={cursorWidth} height={cursorHeigth} className="absolute z-50" style={{top: (heigth/1.135) - sin, left: (width/2.147)+ cos, transform: [{rotate: rotate}]}}/>
-                <View className={clsx("absolute self-center z-0 bottom-0 rounded-t-full", `bg-red-500`)} style={{width: (width/2.381), marginBottom: (width/26.2), height: (width/4.366)}}/>
+                <View className="absolute self-center z-0 bottom-0 rounded-t-full" style={{width: (width/2.381), marginBottom: (width/26.2), height: (width/4.366), backgroundColor: aqiColor(data.globalIndex)}}/>
 			</View>
 			<View style={{flexDirection: 'row', marginTop: 30, alignContent: 'center', alignItems: 'center', justifyContent: 'center'}}>
 				<View style={{
+                    backgroundColor: aqiColor(data.globalIndex),
 					width: 30, 
 					height: 30, 
 					borderRadius: 5, 
