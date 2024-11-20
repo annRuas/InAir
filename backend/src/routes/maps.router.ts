@@ -3,6 +3,6 @@ import * as mapsController from '../controllers/maps.controller';
 
 const mapsRouter: Router = express.Router();
 
-mapsRouter.post('/get-locations', mapsController.getLocations);
+mapsRouter.post('/', mapsController.getLocations);
 
 export { mapsRouter }

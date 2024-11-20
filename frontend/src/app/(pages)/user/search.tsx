@@ -1,11 +1,11 @@
 import { FlatList, ImageBackground, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { COLORS } from '../../../constants/colors'
+import { COLORS } from '../../../../constants/colors';
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { MaterialIcons } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { SearchModal } from '../../components/SearchModal';
+import { SearchModal } from '../../../components/SearchModal';
 import { useLocalSearchParams } from 'expo-router';
 
 export default function Search() {
@@ -17,7 +17,6 @@ export default function Search() {
     const [selectedAddress, setSelectedAddress] = useState('');
     const [selectedCoordinates, setSelectedCoordinates] = useState([]);
     const searchApi = async(text: string) => {
-        console.log(text);
         if(text.length > 3) {
 
             const search = await axios.post(`http://${Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':8000')}/maps/get-locations`, {

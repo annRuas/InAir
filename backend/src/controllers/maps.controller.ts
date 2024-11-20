@@ -1,25 +1,15 @@
 import { Request, Response } from "express";
-import axios, { AxiosResponse } from 'axios';
-
-const { ATLAS_GET_COUNTRY_LINK, ATLAS_GET_LOCATION_LINK, SUBSCRIPTION_KEY } = process.env;
-
+import { axiosMap } from "../configs/axiosMap";
+import { MapService } from "../services/Map.service";
 
 async function getLocations(req: Request, res: Response) {
     const { address_name } = req.body;
 
-    const getLocationsLink = `${ATLAS_GET_LOCATION_LINK}?api-version=2023-06-01&query=${address_name}&subscription-key=${SUBSCRIPTION_KEY}`;
-    
-    const locationsResponse: AxiosResponse = await axios.get(getLocationsLink);
+    const mapService = new MapService(axiosMap);
 
-    const returnArray = locationsResponse.data.features.map((e: any) => {
-        const properties = e.properties
-        return {
-            "coordinates": properties.geocodePoints[0].geometry.coordinates,
-            "address": properties.address.formattedAddress
-        }
-    });
+    const locations = await mapService.getLocations(address_name);
 
-    res.send({addresses: returnArray});
+    res.send({addresses: locations});
 }
 
 export { getLocations }

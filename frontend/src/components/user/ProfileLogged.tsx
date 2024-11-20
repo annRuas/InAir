@@ -2,6 +2,7 @@ import { FC } from "react";
 import { View, Text, StyleSheet } from "react-native"
 import { Button } from "../Button";
 import { ProfileIcon } from "../../icons/ProfileIcon";
+import clsx from "clsx";
 
 
 function getAge(dateString: string) {
@@ -17,6 +18,7 @@ function getAge(dateString: string) {
 
 type ChildrenProps = {
     children?: React.ReactNode;
+    className?: string; 
 }
 
 const TextBold: FC<ChildrenProps> =  ({children, ...props}) => {
@@ -35,9 +37,9 @@ const TextSmall: FC<ChildrenProps> = ({children, ...props}) => {
     )
 }
 
-const ViewBox: FC<ChildrenProps> = ({children, ...props}) => {
+const ViewBox: FC<ChildrenProps> = ({children, className, ...props}) => {
     return (
-        <View className="p-3 rounded-2xl border border-zinc-400" style={styles.shadow} {...props}>
+        <View className={clsx("p-3 rounded-2xl border border-zinc-400", className)} style={styles.shadow} {...props}>
             {children}
         </View>
     )
@@ -53,9 +55,9 @@ type ProfileLoggedProps = {
 export const ProfileLogged: FC<ProfileLoggedProps> = ({diseases, dateOfbirth, email, name}) => {
     const age = getAge(dateOfbirth); 
     return (
-        <View style={{alignContent: 'center', alignItems: 'center', gap: 30, marginTop: 30}}>
-            <ProfileIcon width={150} height={150}/>
-            <Text className="text-3xl font-bold" style={styles.textShadow}> 
+        <View className="flex-1 mx-5 justify-center gap-y-4">
+            <ProfileIcon className="self-center" width={150} height={150}/>
+            <Text className="text-3xl font-bold text-center" style={styles.textShadow}> 
                 {name} 
             </Text>
             <View className="gap-5">
@@ -63,11 +65,11 @@ export const ProfileLogged: FC<ProfileLoggedProps> = ({diseases, dateOfbirth, em
                     <TextBold> RESIDENCE </TextBold>
                     <TextSmall> Address </TextSmall>
                 </ViewBox>
-                <View className="flex-row" style={{gap: 20}}>
-                    <ViewBox>
+                <View className="flex-row justify-evenly" style={{gap:20}}>
+                    <ViewBox className="flex-1">
                         <TextBold> NOTE </TextBold>
                         <TextBold> Bearer of disease</TextBold>
-                        <TextSmall> {'cool'}</TextSmall>
+                        <TextSmall> {diseases.join(', ')}</TextSmall>
                     </ViewBox>
                     <ViewBox> 
                         <TextBold> AGE </TextBold>
@@ -84,6 +86,8 @@ export const ProfileLogged: FC<ProfileLoggedProps> = ({diseases, dateOfbirth, em
     )
 }
 /** @todo make this global */
+/** @todo change error messages on register cooL? */
+/** @todo finish tyding up this page on long diseases messages */
 const styles = StyleSheet.create({
     shadow: {
         shadowColor: "#000",
