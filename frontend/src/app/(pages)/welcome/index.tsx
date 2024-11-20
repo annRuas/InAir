@@ -16,7 +16,7 @@ export default function Welcome2() {
 
 				<PageIndicatorDots/>
 
-				<Link href="./welcome" asChild>
+				<Link href="./welcome/welcome" asChild>
 					<Button>Next</Button>
 				</Link>
 			</View>
