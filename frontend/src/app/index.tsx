@@ -17,9 +17,10 @@ export default function Index() {
 				return router.replace('/auth/form');
 			}
 
-			authContext.userInformation = data;
+			authContext.setUserInformation(data);
+
 			const { locations } = await getUserLocations(uid);
-			authContext.locations = locations;
+			authContext.setLocations(locations);
 
 			return router.replace('/home');
 		}

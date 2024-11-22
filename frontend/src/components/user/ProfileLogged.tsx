@@ -3,13 +3,14 @@ import { View, Text, StyleSheet } from "react-native"
 import { Button } from "../Button";
 import { ProfileIcon } from "../../icons/ProfileIcon";
 import clsx from "clsx";
+import { shadowStyle, textShadow } from "../../utils/shadowStyle";
 
 
 function getAge(dateString: string) {
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
+    const today = new Date();
+    const birthDate = new Date(dateString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
         age--;
     }
@@ -39,7 +40,7 @@ const TextSmall: FC<ChildrenProps> = ({children, ...props}) => {
 
 const ViewBox: FC<ChildrenProps> = ({children, className, ...props}) => {
     return (
-        <View className={clsx("p-3 rounded-2xl border border-zinc-400", className)} style={styles.shadow} {...props}>
+        <View className={clsx("p-3 rounded-2xl border border-zinc-400", className)} style={shadowStyle} {...props}>
             {children}
         </View>
     )
@@ -57,7 +58,7 @@ export const ProfileLogged: FC<ProfileLoggedProps> = ({diseases, dateOfbirth, em
     return (
         <View className="flex-1 mx-5 justify-center gap-y-4">
             <ProfileIcon className="self-center" width={150} height={150}/>
-            <Text className="text-3xl font-bold text-center" style={styles.textShadow}> 
+            <Text className="text-3xl font-bold text-center" style={textShadow}> 
                 {name} 
             </Text>
             <View className="gap-5">
@@ -69,7 +70,7 @@ export const ProfileLogged: FC<ProfileLoggedProps> = ({diseases, dateOfbirth, em
                     <ViewBox className="flex-1">
                         <TextBold> NOTE </TextBold>
                         <TextBold> Bearer of disease</TextBold>
-                        <TextSmall> {diseases.join(', ')}</TextSmall>
+                        <TextSmall> {diseases.slice(0, 3).map((e, i) => i === 2 ? 'more...' : e ).join(', ')}</TextSmall>
                     </ViewBox>
                     <ViewBox> 
                         <TextBold> AGE </TextBold>
@@ -85,24 +86,6 @@ export const ProfileLogged: FC<ProfileLoggedProps> = ({diseases, dateOfbirth, em
         </View>
     )
 }
-/** @todo make this global */
+
 /** @todo change error messages on register cooL? */
 /** @todo finish tyding up this page on long diseases messages */
-const styles = StyleSheet.create({
-    shadow: {
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        backgroundColor: '#F2F2F2',
-    },
-    textShadow: {
-        textShadowColor: 'rgba(0, 0, 0, 0.40)',
-        textShadowOffset: {width: 0, height:3},
-        textShadowRadius: 10
-    }
-})

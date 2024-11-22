@@ -37,32 +37,14 @@ export async function createUserPreferences(req: Request, res: Response, next: N
 }
 
 export async function addLocation(req: Request, res: Response) {
-    const { locationName, latitude, longitude, uid } = req.body;
+    const { location } = req.body;
+    const uid = req.headers.uid as string;
 
-    const usersCollection = collection(firestore, 'users-data');
-    const q = query(usersCollection, where('uid', '==', uid));
+    const userService = new UserService(new Database(), uid);
 
+    await userService.addLocation(location);
 
-    const document = await getDocs(q);
-
-    const docId = document.docs[0].id;
-    const docContent = document.docs[0].data();
-
-    const docReference = doc(firestore, 'users-data', docId)
-
-    const newSingleLocation = {
-        locationName,
-        latitude,
-        longitude
-    }
-
-    const newLocations = docContent.locations ? docContent.locations.concat([newSingleLocation]) : [newSingleLocation];
-    
-    await updateDoc(docReference, {
-        locations: newLocations
-    });
-
-    return res.send();
+    return res.status(200).send({ 'message': 'Location added.' });
 }
 
 export async function getUserInformation(req: Request, res: Response, next: NextFunction) {

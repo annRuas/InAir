@@ -19,10 +19,10 @@ import { AuthContext } from '../../../components/SessionProvider'
 import { createData } from '../../../actions/user.actions'
 
 const schema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6),
-    name: z.string().min(5).max(30),
-    passwordConfirm: z.string().min(4),
+    email: z.string({message: 'This field is required.'}).email({message: 'Invalid email.'}),
+    password: z.string({message: 'This field is required.'}).min(6, 'Password needs to have at least 6 characters.'),
+    name: z.string({message: 'This field is required.'}).min(5, 'Name needs to have at least 6 characters.').max(30),
+    passwordConfirm: z.string({message: 'This field is required'}).min(6, 'Password needs to have at least 6 characters.'),
     hasAcceptedTermsOfService: z.boolean().refine((val) => val === true, {message: 'Terms of service needs to be accepted to create an account.'})
 }).refine((data) => data.password === data.passwordConfirm, {
     message: 'Passwords do not match',

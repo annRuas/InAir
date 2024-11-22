@@ -26,6 +26,7 @@ export const FourthPage: FC<FourthPageProps> = ({changePage, control}) => {
                 
                 <SelectableItem control={control} name="hasAsbestosis" className="self-center" large>Asbestosis</SelectableItem> 
                 <SelectableItem control={control} name="hasAsthma" className="self-center" large>Asthma</SelectableItem>
+                <SelectableItem control={control} name="hasCOPD" className="self-center" large>COPD</SelectableItem>
                 <SelectableItem control={control} name="hasChronicBronchitis" className="self-center" large>Chronic bronchitis</SelectableItem>
                 <SelectableItem control={control} name="hasEmphysema" className="self-center" large>Emphysema</SelectableItem>
                 <SelectableItem control={control} name="hasPneumonia" className="self-center" large>Pneumonia</SelectableItem>

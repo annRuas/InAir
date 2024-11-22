@@ -1,6 +1,6 @@
 
 
-type Location = {
+export type Location = {
     name: string;
     coordinates: {
         longitude: string;
