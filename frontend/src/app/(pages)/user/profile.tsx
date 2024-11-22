@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { ProfileNotLogged } from '../../../components/user/ProfileNotLogged'
-import { AuthContext } from '../../../components/SessionProvider';
+import { AuthContext, UserInformation } from '../../../components/SessionProvider';
 import { ProfileLogged } from '../../../components/user/ProfileLogged';
 
 export default function Profile() {

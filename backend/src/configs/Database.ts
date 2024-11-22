@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { firestore } from "./firebaseConfig";
 
 export class Database {
@@ -12,5 +12,9 @@ export class Database {
         if(docSnap.exists()) {
             return docSnap.data();
         }
+    }
+
+    async updateDoc(collection: string, docName: string, content: object) {
+        await updateDoc(doc(firestore, collection, docName), content);
     }
 }

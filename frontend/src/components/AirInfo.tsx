@@ -67,7 +67,10 @@ export const AirInfoHeader = (props: any) => {
 }
 
 
-export const AirCustomMessage = (props: any) => {
+type AirCustomMessageProps = {
+    className?: string;
+}
+export const AirCustomMessage: FC<AirCustomMessageProps> = ({className, ...props}) => {
     const { useAirFetch } = useAirInfo()
     const { data, isLoading } = useAirFetch();
 
@@ -79,7 +82,7 @@ export const AirCustomMessage = (props: any) => {
 
 	return (
 		<View {...props}>
-			<Text>
+			<Text className={className}>
                 {data.customMessage}
 			</Text>
 		</View>

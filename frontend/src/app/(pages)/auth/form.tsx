@@ -30,6 +30,7 @@ const schema = z.object({
     q_experiences_4: z.boolean(),
     q_experiences_5: z.boolean(),
     hasAsbestosis: z.boolean(),
+    hasCOPD: z.boolean(),
     hasAsthma: z.boolean(),
     hasChronicBronchitis: z.boolean(),
     hasEmphysema: z.boolean(),
@@ -110,7 +111,8 @@ export default function Form() {
 
         const realMonth = monthsAbbreviations.indexOf(month);
         const dateOfBirth = new Date(year, realMonth, day);
-        console.log(dateOfBirth.toISOString());
+        console.log(realMonth);
+        console.log(dateOfBirth);
         if(!isValidDate(realMonth, dateOfBirth)) {
             console.log("invalid date ");
             /** @todo add dialog */

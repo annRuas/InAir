@@ -12,6 +12,7 @@ export const userPreferencesSchema = z.object({
     q_experiences_5: z.boolean(),
     hasAsbestosis: z.boolean(),
     hasAsthma: z.boolean(),
+    hasCOPD: z.boolean(),
     hasChronicBronchitis: z.boolean(),
     hasEmphysema: z.boolean(),
     hasPneumonia: z.boolean(),

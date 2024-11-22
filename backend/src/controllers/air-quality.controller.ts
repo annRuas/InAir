@@ -15,7 +15,8 @@ async function airQuality(req: Request, res: Response) {
 }
 
 async function airQualityCustom(req: Request, res: Response) {
-    const { latitude, longitude, uid } = req.body;
+    const { latitude, longitude } = req.body;
+    const uid = req.headers.uid as string;
     
     const airQuality = new AirQuality(axiosAirQuality);
     const userService = new UserService(new Database(), uid);

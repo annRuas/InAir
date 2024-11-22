@@ -1,6 +1,6 @@
-import { createContext, type PropsWithChildren, useState } from 'react';
+import { createContext, type PropsWithChildren, useEffect, useState } from 'react';
 
-type UserInformation = {
+export type UserInformation = {
 	email: string;
 	name: string;
 	dateOfBirth: string;
@@ -19,35 +19,54 @@ export type Location = {
 type AuthContextInterface = {
 	signIn: (uid: string) => void;
 	signOut: () => void;
-	session: string | null;
 	userInformation: UserInformation | null;
+	setUserInformation: any;
+	session: string | null;
 	locations: Location[] | null;
+	setLocations: any; 
+	notificationToken: string | null;
 }
 
 export const AuthContext = createContext<AuthContextInterface>({
 	signIn: () => null,
 	signOut: () => null,
-	session: null,
 	userInformation: null,
-	locations: null
+	setUserInformation: null,
+	session: null,
+	locations: null,
+	setLocations: null,
+	notificationToken: null
 });
 
+type SessionProviderProps = {
+	children: any;
+	notificationToken: string;
+}
 
-export function SessionProvider({ children }: PropsWithChildren) {
+
+export function SessionProvider({ children, notificationToken }: SessionProviderProps) {
 	const [session, setSession] = useState<string | null>(null);
-	let userInformation = null;
-	let locations = null;
+	const [userInformation, setUserInformation] = useState<null | UserInformation>(null);
+	const [locations, setLocations] = useState<any>([]);
+
 	return (
 		<AuthContext.Provider
 			value={{
 				signIn: (uid: string) => {
 					setSession(uid)
-					userInformation = null;
+					setUserInformation(null);
 				},
-				signOut: () => setSession(null),
+				signOut: () => {
+					setSession(null);
+					setUserInformation(null);
+					setLocations(null);
+				},
 				session,
 				userInformation,
+				setUserInformation,
 				locations,
+				setLocations,
+				notificationToken
 			}}>
 			{children}
 		</AuthContext.Provider>

@@ -1,7 +1,6 @@
 import { UserPreferences } from "../app/(pages)/auth/form";
 import { Location } from "../components/SessionProvider";
 import { axiosInstance } from "../utils/axiosInstance";
-
 export async function createData(email: string, name: string, uid: string) {
     const response = await axiosInstance.post('/users/data', {
         email,
@@ -23,6 +22,18 @@ export async function createPreferences(userPreferences: UserPreferences, uid: s
     })
 
     return response.data;
+}
+
+export async function addLocation(location: Location, uid: string) {
+   const response = await axiosInstance.post('/users/location', {
+    location
+   }, {
+    headers: {
+        uid
+    }
+   });
+   
+   return response.data;
 }
 
 export async function getUserInformation(uid: string) {

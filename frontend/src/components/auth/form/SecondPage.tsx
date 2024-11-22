@@ -21,21 +21,27 @@ export const monthsAbbreviations = ['Jan', 'Feb', 'Mar', 'Apr', 'Jun', 'Jul', 'A
 
 const days = [...Array(31).keys()].map(e => (++e));
 const years = [...Array(100).keys()].reverse().map(e => (++e + 1924)); /** @todo this logic is shit, change later */
-export const SecondPage: FC<SecondPageProps> = ({ changePage, errors, control,...props }) => {
-    /** @todo change year from ScrollView to FlatList */ 
+export const SecondPage: FC<SecondPageProps> = ({ changePage, errors, control, ...props }) => {
+    /** @todo change year from ScrollView to FlatList */
 
     return (
         <View className="gap-y-10 flex-1 justify-center" style={{ width: width }} {...props}>
             <View className="mx-10 gap-y-3">
                 <TextParagraph notCentered>What's your date of birth?</TextParagraph>
-                <View className="flex flex-row z-50 justify-around">
+                <View className="flex-row z-50 justify-around">
                     <View className="basis-1/3">
-                        <DropDownForm control={control} wrong={errors?.month !== undefined} name="month" items={monthsAbbreviations}/>
+
+                        <DropDownForm control={control} wrong={errors?.month !== undefined} name="month" items={monthsAbbreviations} />
                     </View>
-                    <View className="mx-4"/>
-                        <DropDownForm control={control} wrong={errors?.day !== undefined} name="day" items={days} placeholder="Date"/>
-                    <View className="mx-4"/>
-                        <DropDownForm control={control} wrong={errors?.year !== undefined} name="year" items={years} placeholder="Year"/>
+                    <View className="basis-1/3">
+                    <View className="mx-1">
+                        <DropDownForm control={control} wrong={errors?.day !== undefined} name="day" items={days} placeholder="Date" />
+                    </View>
+                    </View>
+                    <View className="basis-1/3">
+
+                    <DropDownForm control={control} wrong={errors?.year !== undefined} name="year" items={years} placeholder="Year" />
+                    </View>
                 </View>
                 <TextParagraph notCentered>What's your biological sex?</TextParagraph>
                 <RadioButton control={control} wrong={errors?.isFemale !== undefined} name="isFemale" firstLabel="Male" secondLabel="Female" />

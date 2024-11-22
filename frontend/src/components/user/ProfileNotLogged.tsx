@@ -20,11 +20,11 @@ export const ProfileNotLogged = () => {
                 To have and personalize a profile, you must create one or log in your account.
             </TextParagraph>
             <View className="my-5"/>
-            <Link href="/Login" asChild>
+            <Link href="/auth/login" asChild>
                 <Button large>Log In</Button>
             </Link>
 
-            <Link href="/Signup" asChild>
+            <Link href="/auth/signup" asChild>
                 <Button large> Create Account</Button>
             </Link>
         </View>

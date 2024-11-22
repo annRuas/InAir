@@ -1,117 +1,143 @@
-import { FlatList, ImageBackground, Modal, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { COLORS } from '../../../../constants/colors';
-import axios from 'axios';
-import Constants from 'expo-constants';
+import { FlatList, Pressable, Text, View } from 'react-native'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { MaterialIcons } from '@expo/vector-icons';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { SearchModal } from '../../../components/SearchModal';
 import { useLocalSearchParams } from 'expo-router';
+import { TextInputImage } from '../../../components/TextInputImage';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { getMatchedLocations } from '../../../actions/map.actions';
+import { shadowStyle } from '../../../utils/shadowStyle';
+import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import { AirCustomMessage, AirInfo, AirInfoGraph, AirInfoHeader } from '../../../components/AirInfo';
+import { AuthContext, Location } from '../../../components/SessionProvider';
+import { Button } from '../../../components/Button';
+import { TextParagraph } from '../../../components/TextParagraph';
+import { CustomModal } from '../../../components/CustomModal';
+import { addLocation } from '../../../actions/user.actions';
+
+const schema = z.object({
+    search: z.string(),
+});
+
+type FormFields = z.infer<typeof schema>
 
 export default function Search() {
-    const params: any = useLocalSearchParams();
+    const authContext = useContext(AuthContext);
+    const { control, watch } = useForm<FormFields>({
+        resolver: zodResolver(schema)
+    });
+    const searchFieldValue = watch("search");
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-    const [input, setInput] = useState<string>("");
     const [data, setData] = useState<any>();
-    const [locationModal, setLocationModal] = useState(false);
-    const [selectedAddress, setSelectedAddress] = useState('');
-    const [selectedCoordinates, setSelectedCoordinates] = useState([]);
-    const searchApi = async(text: string) => {
-        if(text.length > 3) {
-
-            const search = await axios.post(`http://${Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':8000')}/maps/get-locations`, {
-                address_name: text
-            })
-            setData(search.data.addresses);
-        }    
-    }
+    const [notLoggedInModal, setNotLoggedInModal] = useState(false);
+    const [selectedAddress, setSelectedAddress] = useState({
+        name: '',
+        coordinates: {
+            longitude: '',
+            latitude: '',
+        }
+    });
 
     useEffect(() => {
         setData([]);
-        const timeout = setTimeout(() => searchApi(input), 1000);
+        const timeout = setTimeout(async () => {
+            if (searchFieldValue === '') {
+                return;
+            }
+            const data = await getMatchedLocations(searchFieldValue);
+            setData(data.addresses);
+        }, 1000);
         return () => clearTimeout(timeout);
-    }, [input])
+    }, [searchFieldValue])
 
+    /** @todo get link right */
     return (
+        <View className='flex-1' style={{ gap: 20 }}>
+            <View className='items-center m-4' style={{ gap: 20 }}>
 
-        <View style={{ alignItems: 'center', gap: 20}}>
-            
-            <View style={{
-                        height: 50,
-                        width: 322,
-                        borderColor: "#737373",
-                        borderRadius: 16,
-                        borderWidth: 0.5,
-                        marginTop: 40,
-                        paddingLeft: 15,
-                        flexDirection: 'row',
-                        alignItems:'center'
-            }}>
-                <MaterialIcons
-                            name={'search'}
-                            color={'grey'}
-                            size={30}
-                />
-                <TextInput  placeholder='Search'
-                value={input}
-                onChangeText={text => setInput(text)}
-                    style={{fontSize: 18}}
-                    placeholderTextColor={COLORS.mediumgray}                
-                />
-            </View>
-            <FlatList 
-                data={data}
-                renderItem={ ({item, index}) => (
-                    <View style={{ margin: 10, marginHorizontal: 40, marginRight: 70, borderRadius: 14, padding: 20, borderStyle: 'solid', backgroundColor: '#F6F6F6', 
-                        elevation: 5,
-                        shadowColor: '#000',
-                        shadowOffset: {
-                        width: 0,
-                        height: 2,
-                        },
-                        shadowOpacity: 0.2,
-                        shadowRadius: 2,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        }}>
-                        <MaterialIcons
-                            name={'location-pin'}
-                            color={'#CF0000'}
-                            size={30}
-                        />
-                            <Pressable onPress={() => {
-                                setSelectedAddress(item.address);
-                                setSelectedCoordinates(item.coordinates);
-                                setLocationModal(true);
-                                
-                                }}>
-                                <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: 30, verticalAlign: 'middle',  textAlign: 'center' }}> {item.address} </Text>
-                            </Pressable>
-                    </View>
-                )}
-                showsVerticalScrollIndicator={true}
-            />
-            <Modal
-                transparent={true}
-                visible={locationModal}
-            >
-                <View style={{flex:1 , backgroundColor: 'rgba(0,0,0,0.5)'}}>
-                    <View style={{marginTop: 'auto', borderTopStartRadius: 14, borderTopEndRadius: 14, backgroundColor:'#FFFFFF'}}>
-                        <View style={{flexDirection:'row', alignItems:'center', paddingTop: 10}}>
-                            <AntDesign name="down" style={{ paddingLeft: 10}} size={40} onPress={() => setLocationModal(false)} color="black" />
+                <TextInputImage className='mx-3' name='search' placeholder='Search' control={control}>
+                    <MaterialIcons name={'search'} color={'grey'} size={30} />
+                </TextInputImage>
+                <FlatList data={data}
+                    contentContainerStyle={{
+                        gap: 10
+                    }}
+                    style={{ width: '100%', padding: 2, paddingBottom: 5 }}
+                    renderItem={({ item, index }) => (
+                        <View className='rounded-2xl flex-row p-5 items-center w-full' style={[shadowStyle, {
+                            backgroundColor: '#F6F6F6',
+                        }]}>
                             <MaterialIcons
                                 name={'location-pin'}
                                 color={'#CF0000'}
-                                size={40}
+                                size={30}
                             />
-                            <Text style={{ fontSize: 16, fontWeight: 'bold', paddingRight: 90, verticalAlign: 'middle',  textAlign: 'center' }}> {selectedAddress} </Text>
-                            </View>
-                        <View style={{marginBottom: 25}}></View>
-                        <SearchModal isLoggedIn={params.isLoggedIn} setLocationModal={setLocationModal} uid={params.uid} coordinates={selectedCoordinates} locationName={selectedAddress}/>
-                        <View style={{marginBottom: 100}}></View>
-                    </View>
+                            <Pressable onPress={() => {
+                                setSelectedAddress({
+                                    name: item.address,
+                                    coordinates: {
+                                        latitude: item.coordinates[1],
+                                        longitude: item.coordinates[0]
+                                    }
+                                })
+                                bottomSheetModalRef.current?.present();
+                            }}>
+                                <Text className='text-base font-bold text-center'> {item.address} </Text>
+                            </Pressable>
+                        </View>
+                    )}
+                    showsVerticalScrollIndicator={true}
+                />
             </View>
-            </Modal>
+            <BottomSheetModalProvider>
+
+                <BottomSheetModal
+                    ref={bottomSheetModalRef}
+                    style={shadowStyle}
+                >
+                    <BottomSheetView>
+                        <AirInfo className='m-5' uid={authContext.session} location={selectedAddress as Location}>
+                            <AirInfoHeader />
+                            <View className='my-2' />
+                            <View className='justify-center items-center'>
+                                <AirInfoGraph width={300} />
+                            </View>
+                            <View className='my-2' />
+                            {authContext.session !== null ? (<AirCustomMessage className='text-lg'/>) : null}
+                        </AirInfo>
+                        <Button onSubmit={async () => {
+                            if (authContext.session === undefined || authContext.session === null || authContext.userInformation === null) {
+                                bottomSheetModalRef.current?.dismiss();
+                                await new Promise(resolve => setTimeout(resolve, 300));
+                                return setNotLoggedInModal(true);
+                            }
+
+                            await addLocation(selectedAddress, authContext.session);
+                            if(authContext.locations === null || authContext.locations === undefined) {
+                                authContext.setLocations([selectedAddress]);
+                            } else {
+                                authContext.setLocations((previousState: any) => [...previousState, selectedAddress])
+                            }
+                            bottomSheetModalRef.current?.dismiss();
+                        }}>
+                            Save location
+                        </Button>
+                        <View className='mb-10' />
+                    </BottomSheetView>
+                </BottomSheetModal>
+            </BottomSheetModalProvider>
+            <CustomModal dismiss={() => setNotLoggedInModal(false)} transparent={true} visible={notLoggedInModal}>
+                <Text className='font-bold text-center text-xl'>
+                    Create an account
+                </Text>
+                <View className='my-3' />
+                <TextParagraph className='text-base'>
+                    To save a location, you must <Text className='underline'>create one</Text> or <Text className='underline'>log in</Text> your account.
+                </TextParagraph>
+                <View className='mb-2' />
+            </CustomModal>
         </View>
     );
 }
